@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">MyApp</string>
+    <string name="form_label_bglevel">Blood Glucose Level</string>
+    <string name="form_label_dose">Dosage</string>
+    <string name="form_label_event">Event</string>
+    <string name="form_label_notes">Food/Notes</string>
+    <string name="form_label_datetime">Date</string>
+    <string name="form_label_add">Add / Update</string>
+    <string name="form_label_search">Search</string>
+    <string name="form_label_delete">Delete</string>
+    <string name="form_placeholder_date">XXXX/XX/XX</string>
+    <string name="form_placeholder_time">XX:XX</string>
+
+    <string-array name="form_entries_event1">
+        <item>Wake-up</item>
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Snack</item>
+        <item>Dinner</item>
+        <item>Supper</item>
+        <item>Sleep</item>
+    </string-array>
+
+    <string-array name="form_entries_event2">
+        <item>Pre</item>
+        <item>Post</item>
+    </string-array>
+
+    <string name="tab_label_form">Form</string>
+    <string name="tab_label_view">View</string>
+</resources>
