@@ -19,6 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp.util.FileUtil;
 import com.example.myapp.R;
@@ -52,18 +54,14 @@ public class ViewFragment extends Fragment {
 
     public void onClickFindAll(View v) {
         Activity activity = getActivity();
+
         AsyncTask.execute(()-> {
             List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
             getActivity().runOnUiThread( ()-> {
-                String textDisplay = Util.getRecordsText(records);
-                if (textDisplay.isEmpty()) {
-                    textDisplay = "No records found";
-                }
-                else {
-                    textDisplay = BGRECORD_HEADER + textDisplay;
-                }
-
-                ((TextView) activity.findViewById(R.id.textView_view)).setText(textDisplay);
+                RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.rv_records);
+                RecordsAdapter adapter = new RecordsAdapter(records);
+                rvRecords.setAdapter(adapter);
+                rvRecords.setLayoutManager(new LinearLayoutManager(activity));
             });
         });
     }

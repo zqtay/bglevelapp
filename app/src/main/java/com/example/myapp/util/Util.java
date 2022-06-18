@@ -23,35 +23,68 @@ public class Util {
     public final static int RESULT_FAILED = -1;
 
 
-    public static byte convertEvent(String event1) {
-        byte event = (byte)0;
-        if (event1 == null) {
-            return event;
+    public static byte convertEvent(String event) {
+        byte result = (byte)0;
+        if (event == null) {
+            return result;
         }
 
-        if (event1.equals("Wake-up")) {
-            event |= BGRecord.EVENT1_WAKEUP;
+        if (event.equals("Wake-up")) {
+            result |= BGRecord.EVENT1_WAKEUP;
         }
-        else if (event1.equals("Breakfast")) {
-            event |= BGRecord.EVENT1_BREAKFAST;
+        else if (event.equals("Breakfast")) {
+            result |= BGRecord.EVENT1_BREAKFAST;
         }
-        else if (event1.equals("Lunch")) {
-            event |= BGRecord.EVENT1_LUNCH;
+        else if (event.equals("Lunch")) {
+            result |= BGRecord.EVENT1_LUNCH;
         }
-        else if (event1.equals("Snack")) {
-            event |= BGRecord.EVENT1_SNACK;
+        else if (event.equals("Snack")) {
+            result |= BGRecord.EVENT1_SNACK;
         }
-        else if (event1.equals("Dinner")) {
-            event |= BGRecord.EVENT1_DINNER;
+        else if (event.equals("Dinner")) {
+            result |= BGRecord.EVENT1_DINNER;
         }
-        else if (event1.equals("Supper")) {
-            event |= BGRecord.EVENT1_SUPPER;
+        else if (event.equals("Supper")) {
+            result |= BGRecord.EVENT1_SUPPER;
         }
-        else if (event1.equals("Sleep")) {
-            event |= BGRecord.EVENT1_SLEEP;
+        else if (event.equals("Sleep")) {
+            result |= BGRecord.EVENT1_SLEEP;
         }
 
-        return event;
+        return result;
+    }
+
+    public static String convertEvent(int event) {
+        String result = "";
+
+        switch (event) {
+            case BGRecord.EVENT1_WAKEUP:
+                result = "Wake-up";
+                break;
+            case BGRecord.EVENT1_BREAKFAST:
+                result = "Breakfast";
+                break;
+            case BGRecord.EVENT1_LUNCH:
+                result = "Lunch";
+                break;
+            case BGRecord.EVENT1_SNACK:
+                result = "Snack";
+                break;
+            case BGRecord.EVENT1_DINNER:
+                result = "Dinner";
+                break;
+            case BGRecord.EVENT1_SUPPER:
+                result = "Supper";
+                break;
+            case BGRecord.EVENT1_SLEEP:
+                result = "Sleep";
+                break;
+            default:
+                result = "";
+                break;
+        }
+
+        return result;
     }
 
     public static int convertDate(String date) {

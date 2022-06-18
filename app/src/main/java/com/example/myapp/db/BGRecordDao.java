@@ -20,7 +20,7 @@ public interface BGRecordDao {
             "event = :event LIMIT 1")
     Single<BGRecord> find(int date, byte event);
 
-    @Query("SELECT * FROM bgrecord")
+    @Query("SELECT * FROM bgrecord ORDER BY date ASC, event ASC")
     Flowable<List<BGRecord>> findAll();
 
     @Query("SELECT * FROM bgrecord WHERE date IN (:dates)")

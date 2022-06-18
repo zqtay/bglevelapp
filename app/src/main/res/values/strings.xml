@@ -12,6 +12,8 @@
     <string name="form_label_export">Export</string>
     <string name="form_placeholder_date">XXXX/XX/XX</string>
     <string name="form_placeholder_time">XX:XX</string>
+    <string name="form_placeholder_float">XX.X</string>
+    <string name="form_placeholder_string">XXXXXXXX</string>
 
     <string-array name="form_entries_event1">
         <item>Wake-up</item>
