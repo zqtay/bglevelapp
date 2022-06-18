@@ -8,6 +8,8 @@
     <string name="form_label_add">Add / Update</string>
     <string name="form_label_search">Search</string>
     <string name="form_label_delete">Delete</string>
+    <string name="form_label_reload">Reload</string>
+    <string name="form_label_export">Export</string>
     <string name="form_placeholder_date">XXXX/XX/XX</string>
     <string name="form_placeholder_time">XX:XX</string>
 
