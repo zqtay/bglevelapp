@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(primaryKeys = {"date","event"})
 public class BGRecord {
     public static final byte EVENT1_WAKEUP = (byte)0x01;
     public static final byte EVENT1_BREAKFAST = (byte)0x02;
@@ -19,6 +19,7 @@ public class BGRecord {
     public static final byte EVENT2_PRE = (byte)0x10;
     public static final byte EVENT2_POST = (byte)0x20;
 
+
     public BGRecord(int date, byte event, Float bglevel_pre, Float bglevel_post, Float dose, String notes) {
         this.date = date;
         this.event = event;
@@ -28,7 +29,6 @@ public class BGRecord {
         this.notes = notes;
     }
 
-    @PrimaryKey
     @NonNull
     public int date;
     public byte event;

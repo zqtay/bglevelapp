@@ -54,13 +54,20 @@ public class AppDatabaseService {
     }
 
     public static List<BGRecord> findAllRecord(Context context) {
+        List<BGRecord> records = null;
         if (dao == null) {
             buildDatabase(context);
         }
-        return dao.findAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toObservable().blockingFirst(null);
+        try {
+            records = dao.findAll()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .toObservable().blockingFirst(null);
+        }
+        catch (EmptyResultSetException ex) {
+
+        }
+        return records;
     }
 
     public static void addRecord(BGRecord record, Context context) {

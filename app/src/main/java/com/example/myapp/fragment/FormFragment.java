@@ -55,12 +55,11 @@ public class FormFragment extends Fragment {
 
         if (formattedDate != null) {
             ((Button) view.findViewById(R.id.button_date)).setText(formattedDate);
-            // ((Button) findViewById(R.id.button_time)).setText(formattedDate[1]);
         }
 
         // Setup onclick events
         view.findViewById(R.id.button_date).setOnClickListener(this::showDatePickerDialog);
-        view.findViewById(R.id.button_search).setOnClickListener(this::onClickSearch);
+        // view.findViewById(R.id.button_search).setOnClickListener(this::onClickSearch);
         view.findViewById(R.id.button_add).setOnClickListener(this::onClickAdd);
         view.findViewById(R.id.button_delete).setOnClickListener(this::onClickDelete);
 
@@ -127,6 +126,7 @@ public class FormFragment extends Fragment {
         AppDatabaseService.addUpdateRecord(record, activity.getApplicationContext());
     }
 
+    /*
     public void onClickSearch(View v) {
         Activity activity = getActivity();
         Context context = activity.getApplicationContext();
@@ -160,6 +160,7 @@ public class FormFragment extends Fragment {
             });
         });
     }
+    */
 
     public void onClickDelete(View v) {
         Activity activity = getActivity();
