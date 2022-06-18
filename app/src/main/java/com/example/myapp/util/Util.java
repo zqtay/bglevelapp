@@ -1,4 +1,4 @@
-package com.example.myapp;
+package com.example.myapp.util;
 
 import com.example.myapp.db.BGRecord;
 

@@ -7,12 +7,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
+import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,15 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.myapp.FileUtil;
+import com.example.myapp.util.FileUtil;
 import com.example.myapp.R;
-import com.example.myapp.Util;
+import com.example.myapp.util.Util;
 import com.example.myapp.db.AppDatabaseService;
 import com.example.myapp.db.BGRecord;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 public class ViewFragment extends Fragment {
@@ -50,23 +47,7 @@ public class ViewFragment extends Fragment {
         view.findViewById(R.id.button_findAll).setOnClickListener(this::onClickFindAll);
         view.findViewById(R.id.button_export).setOnClickListener(this::onClickExport);
 
-        AsyncTask.execute(()-> {
-            List<BGRecord> records = AppDatabaseService.findAllRecord(getActivity().getApplicationContext());
-            getActivity().runOnUiThread( ()-> {
-                String textDisplay = Util.getRecordsText(records);
-                if (textDisplay.isEmpty()) {
-                    textDisplay = "No records found";
-                }
-                else {
-                    textDisplay = BGRECORD_HEADER + textDisplay;
-                }
-
-                ((TextView) view.findViewById(R.id.textView_view)).setText(textDisplay);
-            });
-        });
-
-        view.findViewById(R.id.button_findAll).setOnClickListener(this::onClickFindAll);
-
+        onClickFindAll(view);
     }
 
     public void onClickFindAll(View v) {
@@ -88,16 +69,19 @@ public class ViewFragment extends Fragment {
     }
 
     public void onClickExport(View v) {
-        Activity activity = getActivity();
-        Context context = activity.getApplicationContext();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            if (!Environment.isExternalStorageManager()){
+                Intent getpermission = new Intent();
+                getpermission.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(getpermission);
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             i.addCategory(Intent.CATEGORY_DEFAULT);
             startActivityForResult(Intent.createChooser(i, "Choose directory"), ACTIVITY_REQUEST_EXPORT_FILE);
         }
-
-
     }
 
     public void exportFile(Uri exportUri) {
