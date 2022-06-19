@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/form_label_bglevel"
+                    android:text="@string/text_label_bglevel"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/spinner_event1" />
@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/form_label_dose"
+                    android:text="@string/text_label_dose"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textInput_bglevel" />
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/form_label_event"
+                    android:text="@string/text_label_event"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/button_date" />
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/form_label_notes"
+                    android:text="@string/text_label_notes"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textInput_dose" />
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="@string/form_label_datetime"
+                    android:text="@string/text_label_datetime"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -139,7 +139,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="4dp"
-                    android:text="@string/form_placeholder_date"
+                    android:text="@string/text_placeholder_date"
                     app:layout_constraintEnd_toStartOf="@+id/button_time"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLabel_datetime" />
@@ -151,7 +151,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="16dp"
-                    android:text="@string/form_placeholder_time"
+                    android:text="@string/text_placeholder_time"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/button_date"
@@ -190,7 +190,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="@string/form_label_add"
+                android:text="@string/text_label_add"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -202,7 +202,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="#A80000"
-                android:text="@string/form_label_delete"
+                android:text="@string/text_label_delete"
                 app:layout_constraintBottom_toTopOf="@+id/button_add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

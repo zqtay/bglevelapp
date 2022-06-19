@@ -1,19 +1,22 @@
 <resources>
     <string name="app_name">MyApp</string>
-    <string name="form_label_bglevel">Blood Glucose Level</string>
-    <string name="form_label_dose">Dosage</string>
-    <string name="form_label_event">Event</string>
-    <string name="form_label_notes">Food/Notes</string>
-    <string name="form_label_datetime">Date</string>
-    <string name="form_label_add">Add / Update</string>
-    <string name="form_label_search">Search</string>
-    <string name="form_label_delete">Delete</string>
-    <string name="form_label_reload">Reload</string>
-    <string name="form_label_export">Export</string>
-    <string name="form_placeholder_date">XXXX/XX/XX</string>
-    <string name="form_placeholder_time">XX:XX</string>
-    <string name="form_placeholder_float">XX.X</string>
-    <string name="form_placeholder_string">XXXXXXXX</string>
+    <string name="text_label_bglevel">Blood Glucose Level</string>
+    <string name="text_label_pre">Pre</string>
+    <string name="text_label_post">Post</string>
+    <string name="text_label_dose">Dose</string>
+    <string name="text_label_event">Event</string>
+    <string name="text_label_notes">Food/Notes</string>
+    <string name="text_label_datetime">Date</string>
+    <string name="text_label_add">Add / Update</string>
+    <string name="text_label_search">Search</string>
+    <string name="text_label_delete">Delete</string>
+    <string name="text_label_reload">Reload</string>
+    <string name="text_label_export">Export</string>
+    <string name="text_label_recordInfo">Record Info</string>
+    <string name="text_placeholder_date">XXXX/XX/XX</string>
+    <string name="text_placeholder_time">XX:XX</string>
+    <string name="text_placeholder_float">XX.X</string>
+    <string name="text_placeholder_string">XXXXXXXX</string>
 
     <string-array name="form_entries_event1">
         <item>Wake-up</item>
