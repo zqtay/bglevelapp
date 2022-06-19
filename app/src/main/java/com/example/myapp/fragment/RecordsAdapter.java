@@ -64,7 +64,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         String event = Util.convertEvent(record.event);
         String bglevel_pre = (record.bglevel_pre != null) ? String.format("%.01f", record.bglevel_pre) : "";
         String bglevel_post = (record.bglevel_post != null) ? String.format("%.01f", record.bglevel_post) : "";
-        String dose = (record.bglevel_pre != null) ? String.format("%.01f", record.dose) : "";
+        String dose = (record.dose != null) ? String.format("%.01f", record.dose) : "";
         String notes = (record.notes != null) ? record.notes : "";
 
         holder.dateTextView.setText(date);
