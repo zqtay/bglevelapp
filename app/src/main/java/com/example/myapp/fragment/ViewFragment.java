@@ -35,8 +35,6 @@ import com.example.myapp.db.BGRecord;
 import java.util.List;
 
 public class ViewFragment extends Fragment {
-    public static final int ACTIVITY_REQUEST_EXPORT_FILE = 0x9999;
-    public static final String BGRECORD_HEADER = "date,event,bglevel_pre,bglevel_post,dose,notes\n";
 
     @Nullable
     @Override
@@ -82,7 +80,7 @@ public class ViewFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             i.addCategory(Intent.CATEGORY_DEFAULT);
-            startActivityForResult(Intent.createChooser(i, "Choose directory"), ACTIVITY_REQUEST_EXPORT_FILE);
+            startActivityForResult(Intent.createChooser(i, "Choose directory"), Util.ACTIVITY_REQUEST_EXPORT_FILE);
         }
     }
 
@@ -93,7 +91,7 @@ public class ViewFragment extends Fragment {
         Log.d("debug",exportPath);
         AsyncTask.execute(()-> {
             List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
-            String textDisplay = BGRECORD_HEADER + Util.getRecordsText(records);
+            String textDisplay = Util.BGRECORD_HEADER + Util.getRecordsText(records);
             int exportResult = Util.writeToFile(textDisplay, exportPath, "BGRecord.txt");
             getActivity().runOnUiThread(() -> {
                 if (exportResult == Util.RESULT_SUCCESS) {
@@ -117,7 +115,7 @@ public class ViewFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch(requestCode) {
-            case ACTIVITY_REQUEST_EXPORT_FILE:
+            case Util.ACTIVITY_REQUEST_EXPORT_FILE:
                 Uri exportUri = data.getData();
                 Log.i("Test", "Result URI " + exportUri);
                 if (exportUri != null) {

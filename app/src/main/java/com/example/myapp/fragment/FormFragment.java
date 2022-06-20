@@ -27,7 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class FormFragment extends Fragment {
-    final static String datePattern = "yyyy/MM/dd";
 
     @Nullable
     @Override
@@ -45,7 +44,7 @@ public class FormFragment extends Fragment {
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
 
-        SimpleDateFormat df = new SimpleDateFormat(datePattern);
+        SimpleDateFormat df = new SimpleDateFormat(Util.DATE_PATTERN);
         String formattedDate = df.format(c.getTime());
 
         if (formattedDate != null) {
@@ -88,7 +87,7 @@ public class FormFragment extends Fragment {
                 c.set(Calendar.YEAR, year);
                 c.set(Calendar.MONTH, month);
                 c.set(Calendar.DAY_OF_MONTH, day);
-                String date = (new SimpleDateFormat(datePattern)).format(c.getTime());
+                String date = (new SimpleDateFormat(Util.DATE_PATTERN)).format(c.getTime());
                 ((Button)viewToUpdate).setText(date);
             }
         }
