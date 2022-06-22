@@ -23,8 +23,11 @@ public interface BGRecordDao {
     @Query("SELECT * FROM bgrecord ORDER BY date ASC, event ASC")
     Flowable<List<BGRecord>> findAll();
 
+    @Query("SELECT * FROM bgrecord WHERE date = :date")
+    Flowable<List<BGRecord>> findByDate(int date);
+
     @Query("SELECT * FROM bgrecord WHERE date IN (:dates)")
-    Flowable<List<BGRecord>> loadAllByDates(int[] dates);
+    Flowable<List<BGRecord>> findByDates(int[] dates);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insert(BGRecord record);

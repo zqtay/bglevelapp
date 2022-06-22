@@ -1,13 +1,11 @@
 package com.example.myapp.fragment;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -22,7 +20,7 @@ public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new FormFragment();
             case 1:
-                return new ViewFragment();
+                return new RecordsFragment();
             default:
                 Log.d("debug","Invalid tab index");
         }
@@ -35,7 +33,7 @@ public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "Form";
             case 1:
-                return "View";
+                return "Records";
             default:
                 Log.d("debug","Invalid tab index");
         }

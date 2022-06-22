@@ -96,7 +96,7 @@ public class FormFragment extends Fragment {
     public void showDatePickerDialog(View v) {
         FragmentActivity activity = getActivity();
         DialogFragment newFragment = new DatePickerFragment(v);
-        newFragment.show(activity.getSupportFragmentManager(), "datePicker");
+        newFragment.show(activity.getSupportFragmentManager(), "datePickerForm");
     }
 
     public void onClickAdd(View v) {

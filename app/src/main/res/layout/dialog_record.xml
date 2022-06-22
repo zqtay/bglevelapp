@@ -10,11 +10,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/dialog_cardView"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="4dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
@@ -38,7 +38,7 @@
                 android:maxLines="1"
                 android:text="@string/text_label_recordInfo"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -194,17 +194,33 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="left"
                 android:maxLines="10"
                 android:text="@string/text_placeholder_string"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/dialog_button_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_textLabel_notes" />
+
+            <Button
+                android:id="@+id/dialog_button_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#a80000"
+                android:text="@string/text_label_delete"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_textView_notes" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

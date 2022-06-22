@@ -23,6 +23,7 @@ public class Util {
     public final static int RESULT_FAILED = -1;
 
     public final static String DATE_PATTERN = "yyyy/MM/dd";
+    public final static String DATE_PATTERN_DATA = "yyyyMMdd";
 
     public static final int ACTIVITY_REQUEST_EXPORT_FILE = 0x9999;
     public static final String BGRECORD_HEADER = "date,event,bglevel_pre,bglevel_post,dose,notes\n";

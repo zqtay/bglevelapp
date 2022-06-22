@@ -7,12 +7,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.myapp.R;
+import com.example.myapp.db.AppDatabaseService;
+import com.example.myapp.util.Util;
 
 public class RecordInfoDialog extends Dialog {
     String date;
@@ -33,6 +37,8 @@ public class RecordInfoDialog extends Dialog {
         this.setContentView(R.layout.dialog_record);
         fillDialogContent();
         this.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        ((Button) findViewById(R.id.dialog_button_delete)).setOnLongClickListener(this::onClickDelete);
     }
 
     public void fillDialogContent() {
@@ -42,6 +48,13 @@ public class RecordInfoDialog extends Dialog {
         ((TextView) findViewById(R.id.dialog_textView_bglevel_post)).setText(bglevel_post);
         ((TextView) findViewById(R.id.dialog_textView_dose)).setText(dose);
         ((TextView) findViewById(R.id.dialog_textView_notes)).setText(notes);
+    }
+
+    public boolean onClickDelete(View v) {
+        int dataDate = Util.convertDate(date);
+        byte dataEvent = Util.convertEvent(event);
+        AppDatabaseService.deleteRecord(dataDate, dataEvent, v.getContext());
+        return true;
     }
 }
 

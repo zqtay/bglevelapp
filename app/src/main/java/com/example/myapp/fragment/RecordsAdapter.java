@@ -89,6 +89,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 RecordInfoDialog dialog = new RecordInfoDialog(view.getContext(), finalDate, event, bglevel_pre, bglevel_post, dose, notes);
+                //dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
         });

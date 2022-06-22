@@ -70,6 +70,23 @@ public class AppDatabaseService {
         return records;
     }
 
+    public static List<BGRecord> findRecordsByDate(int date, Context context) {
+        List<BGRecord> records = null;
+        if (dao == null) {
+            buildDatabase(context);
+        }
+        try {
+            records = dao.findByDate(date)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .toObservable().blockingFirst(null);
+        }
+        catch (EmptyResultSetException ex) {
+
+        }
+        return records;
+    }
+
     public static void addRecord(BGRecord record, Context context) {
         if (dao == null) {
             buildDatabase(context);

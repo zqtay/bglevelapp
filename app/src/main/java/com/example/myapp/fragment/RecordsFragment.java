@@ -1,7 +1,7 @@
 package com.example.myapp.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,9 +35,11 @@ import com.example.myapp.util.Util;
 import com.example.myapp.db.AppDatabaseService;
 import com.example.myapp.db.BGRecord;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
-public class ViewFragment extends Fragment {
+public class RecordsFragment extends Fragment {
 
     @Nullable
     @Override
@@ -46,15 +51,33 @@ public class ViewFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Activity activity = getActivity();
+
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.button_findAll).setOnClickListener(this::onClickFindAll);
-        view.findViewById(R.id.button_export).setOnClickListener(this::onClickExport);
+        activity.findViewById(R.id.button_export).setOnClickListener(this::onClickExport);
+        Button reloadButton = (Button) view.findViewById(R.id.button_reload);
+        reloadButton.setOnClickListener(this::onClickReload);
+        reloadButton.setOnLongClickListener(this::showDatePickerDialog);
 
-        onClickFindAll(view);
+        onClickReload(null);
     }
 
-    public void onClickFindAll(View v) {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            try {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            } catch (Exception e) {
+                Log.e("error", "setUserVisibleHint: ", e);
+            }
+        }
+    }
+
+    public void onClickReload(View v) {
         Activity activity = getActivity();
 
         AsyncTask.execute(()-> {
@@ -123,5 +146,53 @@ public class ViewFragment extends Fragment {
                 }
                 break;
         }
+    }
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        DatePickerFragment() {
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            Activity activity = getActivity();
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, year);
+            c.set(Calendar.MONTH, month);
+            c.set(Calendar.DAY_OF_MONTH, day);
+            int date = Integer.parseInt((new SimpleDateFormat(Util.DATE_PATTERN_DATA)).format(c.getTime()));
+            AsyncTask.execute(()-> {
+                List<BGRecord> records = AppDatabaseService.findRecordsByDate(date, activity.getApplicationContext());
+                getActivity().runOnUiThread( ()-> {
+                    RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.rv_records);
+                    RecordsAdapter adapter = new RecordsAdapter(records);
+                    rvRecords.setAdapter(adapter);
+                    rvRecords.setLayoutManager(new LinearLayoutManager(activity));
+                });
+            });
+        }
+    }
+
+    public boolean showDatePickerDialog(View v) {
+        FragmentActivity activity = getActivity();
+        DialogFragment newFragment = new RecordsFragment.DatePickerFragment();
+        newFragment.show(activity.getSupportFragmentManager(), "datePickerRecords");
+        return true;
+    }
+
+
+        AppDatabaseService.deleteRecord(dataDate, dataEvent, activity.getApplicationContext());
     }
 }
