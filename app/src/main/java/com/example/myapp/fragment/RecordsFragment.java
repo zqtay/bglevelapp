@@ -13,6 +13,9 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -46,7 +49,8 @@ public class RecordsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_view, container, false);
+        setHasOptionsMenu(true);
+        return inflater.inflate(R.layout.fragment_records, container, false);
     }
 
     @Override
@@ -55,7 +59,7 @@ public class RecordsFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        activity.findViewById(R.id.button_export).setOnClickListener(this::onClickExport);
+        // activity.findViewById(R.id.button_export).setOnClickListener(this::onClickExport);
         Button reloadButton = (Button) view.findViewById(R.id.button_reload);
         reloadButton.setOnClickListener(this::onClickReload);
         reloadButton.setOnLongClickListener(this::showDatePickerDialog);
@@ -139,9 +143,9 @@ public class RecordsFragment extends Fragment {
 
         switch(requestCode) {
             case Util.ACTIVITY_REQUEST_EXPORT_FILE:
-                Uri exportUri = data.getData();
-                Log.i("Test", "Result URI " + exportUri);
-                if (exportUri != null) {
+                if (data != null) {
+                    Uri exportUri = data.getData();
+                    Log.i("Test", "Result URI " + exportUri);
                     exportFile(exportUri);
                 }
                 break;
@@ -192,7 +196,20 @@ public class RecordsFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
 
-        AppDatabaseService.deleteRecord(dataDate, dataEvent, activity.getApplicationContext());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.toolbar_menu_action_export:
+                onClickExport(null);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
