@@ -140,23 +140,9 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/text_placeholder_date"
-                    app:layout_constraintEnd_toStartOf="@+id/button_time"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLabel_datetime" />
-
-                <Button
-                    android:id="@+id/button_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/text_placeholder_time"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/button_date"
-                    app:layout_constraintTop_toBottomOf="@+id/textLabel_datetime"
-                    tools:visibility="gone" />
 
                 <EditText
                     android:id="@+id/textInput_notes"
@@ -195,20 +181,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/button_delete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="#A80000"
-                android:text="@string/text_label_delete"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/button_add"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

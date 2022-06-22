@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/button_export"
+            app:layout_constraintBottom_toTopOf="@+id/button_reload"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,20 +35,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/button_export"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/teal_200"
-            android:text="@string/text_label_export"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/button_reload"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

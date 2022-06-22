@@ -59,7 +59,6 @@ public class RecordsFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        // activity.findViewById(R.id.button_export).setOnClickListener(this::onClickExport);
         Button reloadButton = (Button) view.findViewById(R.id.button_reload);
         reloadButton.setOnClickListener(this::onClickReload);
         reloadButton.setOnLongClickListener(this::showDatePickerDialog);
