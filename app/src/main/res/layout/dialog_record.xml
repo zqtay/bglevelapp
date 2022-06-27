@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
                 android:text="@string/text_label_recordInfo"
                 android:textColor="@color/black"
@@ -46,10 +47,7 @@
                 android:id="@+id/dialog_divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:background="@color/dark_grey"
+                android:background="?android:attr/dividerHorizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_textLabel_info" />
@@ -194,33 +192,87 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="10dp"
                 android:gravity="left"
                 android:maxLines="10"
                 android:text="@string/text_placeholder_string"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/dialog_button_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_textLabel_notes" />
 
-            <Button
-                android:id="@+id/dialog_button_delete"
+            <View
+                android:id="@+id/dialog_divider2"
                 android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/dividerHorizontal"
+                app:layout_constraintBottom_toTopOf="@+id/dialog_button_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dialog_textView_notes" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dialog_button_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="#a80000"
-                android:text="@string/text_label_delete"
-                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_textView_notes" />
+                app:layout_constraintTop_toBottomOf="@+id/dialog_divider2">
+
+                <Button
+                    android:id="@+id/dialog_button_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/text_label_edit"
+                    android:textColor="@color/purple_700"
+                    android:textSize="14sp"
+                    app:cornerRadius="0dp"
+                    app:icon="@drawable/ic_baseline_edit_24"
+                    app:iconTint="@color/purple_700"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/dialog_button_divider"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/purple_700" />
+
+                <Button
+                    android:id="@+id/dialog_button_delete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/text_label_delete"
+                    android:textColor="@color/dark_red"
+                    android:textSize="14sp"
+                    app:cornerRadius="0dp"
+                    app:icon="@drawable/ic_baseline_delete_forever_24"
+                    app:iconTint="@color/dark_red"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/dialog_button_divider"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/dark_red" />
+
+                <View
+                    android:id="@+id/dialog_button_divider"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:background="?android:attr/dividerHorizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/dialog_button_delete"
+                    app:layout_constraintStart_toEndOf="@+id/dialog_button_edit"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

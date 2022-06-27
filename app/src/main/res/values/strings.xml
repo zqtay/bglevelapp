@@ -9,6 +9,7 @@
     <string name="text_label_datetime">Date</string>
     <string name="text_label_add">Add / Update</string>
     <string name="text_label_search">Search</string>
+    <string name="text_label_edit">Edit</string>
     <string name="text_label_delete">Delete</string>
     <string name="text_label_reload">Reload</string>
     <string name="text_label_export">Export</string>
@@ -34,5 +35,5 @@
     </string-array>
 
     <string name="tab_label_form">Form</string>
-    <string name="tab_label_view">View</string>
+    <string name="tab_label_records">Records</string>
 </resources>
