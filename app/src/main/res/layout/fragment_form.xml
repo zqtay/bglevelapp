@@ -46,7 +46,7 @@
                     android:text="@string/text_label_dose"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInput_bglevel" />
+                    app:layout_constraintTop_toBottomOf="@+id/textInput_bglevel_pre" />
 
                 <TextView
                     android:id="@+id/textLabel_event"
@@ -82,16 +82,32 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/textInput_bglevel"
+                    android:id="@+id/textInput_bglevel_pre"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/text_label_pre"
+                    android:inputType="numberDecimal"
+                    app:layout_constraintEnd_toStartOf="@+id/textInput_bglevel_post"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textLabel_bglevel"
+                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+                <EditText
+                    android:id="@+id/textInput_bglevel_post"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginEnd="16dp"
                     android:ems="10"
+                    android:hint="@string/text_label_post"
                     android:inputType="numberDecimal"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textInput_bglevel_pre"
                     app:layout_constraintTop_toBottomOf="@+id/textLabel_bglevel"
                     tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
@@ -103,6 +119,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="16dp"
                     android:ems="10"
+                    android:hint="@string/text_placeholder_float"
                     android:inputType="numberDecimal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -114,22 +131,10 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="2dp"
-                    android:layout_marginEnd="4dp"
-                    android:entries="@array/form_entries_event1"
-                    app:layout_constraintEnd_toStartOf="@+id/spinner_event2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textLabel_event" />
-
-                <Spinner
-                    android:id="@+id/spinner_event2"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="2dp"
                     android:layout_marginEnd="16dp"
-                    android:entries="@array/form_entries_event2"
+                    android:entries="@array/form_entries_event1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/spinner_event1"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textLabel_event" />
 
                 <Button
@@ -152,6 +157,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="16dp"
                     android:ems="10"
+                    android:hint="@string/text_placeholder_string"
                     android:inputType="textLongMessage"
                     android:maxLines="1"
                     app:layout_constraintEnd_toEndOf="parent"

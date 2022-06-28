@@ -3,10 +3,12 @@ package com.example.myapp.fragment;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -40,6 +42,9 @@ public class FormFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Button dateButton = (Button) view.findViewById(R.id.button_date);
+        Button addButton = (Button) view.findViewById(R.id.button_add);
+
         // Date button
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
@@ -48,12 +53,13 @@ public class FormFragment extends Fragment {
         String formattedDate = df.format(c.getTime());
 
         if (formattedDate != null) {
-            ((Button) view.findViewById(R.id.button_date)).setText(formattedDate);
+            dateButton.setText(formattedDate);
         }
 
         // Setup onclick events
-        view.findViewById(R.id.button_date).setOnClickListener(this::showDatePickerDialog);
-        view.findViewById(R.id.button_add).setOnClickListener(this::onClickAdd);
+        dateButton.setOnClickListener(this::showDatePickerDialog);
+        addButton.setOnClickListener(this::onClickAdd);
+        addButton.setOnLongClickListener(this::onLongClickClear);
     }
 
 
@@ -100,20 +106,46 @@ public class FormFragment extends Fragment {
         Activity activity = getActivity();
         String date = ((Button) activity.findViewById(R.id.button_date)).getText().toString();
         String event1 = ((Spinner) activity.findViewById(R.id.spinner_event1)).getSelectedItem().toString();
-        String event2 = ((Spinner) activity.findViewById(R.id.spinner_event2)).getSelectedItem().toString();
-        String bglevel = ((EditText) activity.findViewById(R.id.textInput_bglevel)).getText().toString();
+        String bglevel_pre = ((EditText) activity.findViewById(R.id.textInput_bglevel_pre)).getText().toString();
+        String bglevel_post = ((EditText) activity.findViewById(R.id.textInput_bglevel_post)).getText().toString();
         String dose = ((EditText) activity.findViewById(R.id.textInput_dose)).getText().toString();
         String notes = ((EditText) activity.findViewById(R.id.textInput_notes)).getText().toString();
 
         int dataDate = Util.convertDate(date);
         byte dataEvent = Util.convertEvent(event1);
-        Float dataBglevel = (bglevel != null && !bglevel.trim().equals("")) ? Float.parseFloat(bglevel) : null;
+        Float dataBglevel_pre = (bglevel_pre != null && !bglevel_pre.trim().equals("")) ? Float.parseFloat(bglevel_pre) : null;
+        Float dataBglevel_post = (bglevel_post != null && !bglevel_post.trim().equals("")) ? Float.parseFloat(bglevel_post) : null;
         Float dataDose = (dose != null && !dose.trim().equals("")) ? Float.parseFloat(dose) : null;
         String dataNotes = (notes != null && !notes.trim().equals("")) ? notes : null;
-        Float bglevel_pre = (event2.equals("Pre")) ? dataBglevel : null;
-        Float bglevel_post = (event2.equals("Post")) ? dataBglevel : null;
 
-        BGRecord record = new BGRecord(dataDate, dataEvent, bglevel_pre, bglevel_post, dataDose, dataNotes);
+        BGRecord record = new BGRecord(dataDate, dataEvent, dataBglevel_pre, dataBglevel_post, dataDose, dataNotes);
         AppDatabaseService.addUpdateRecord(record, activity.getApplicationContext());
+
+        // Hide keyboard
+        try {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            Log.e("error", "setUserVisibleHint: ", e);
+        }
+    }
+
+    public boolean onLongClickClear(View v) {
+        Activity activity = getActivity();
+        ((EditText) activity.findViewById(R.id.textInput_bglevel_pre)).setText("");
+        ((EditText) activity.findViewById(R.id.textInput_bglevel_post)).setText("");
+        ((EditText) activity.findViewById(R.id.textInput_dose)).setText("");
+        ((EditText) activity.findViewById(R.id.textInput_notes)).setText("");
+
+        // Hide keyboard
+        try {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            Log.e("error", "setUserVisibleHint: ", e);
+        }
+        return true;
     }
 }

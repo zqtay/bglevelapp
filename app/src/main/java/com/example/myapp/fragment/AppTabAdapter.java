@@ -7,9 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
+public class AppTabAdapter extends FragmentPagerAdapter {
 
-    public AppFragmentPagerAdapter(@NonNull FragmentManager fm) {
+    public static final int TAB_FORM_POSITION = (int)0;
+    public static final int TAB_RECORDS_POSITION = (int)1;
+    public static final String TAB_FORM_TITLE = "Form";
+    public static final String TAB_RECORDS_TITLE = "Records";
+
+    public AppTabAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 
@@ -17,9 +22,9 @@ public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
+            case TAB_FORM_POSITION:
                 return new FormFragment();
-            case 1:
+            case TAB_RECORDS_POSITION:
                 return new RecordsFragment();
             default:
                 Log.d("debug","Invalid tab index");
@@ -30,10 +35,10 @@ public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-            case 0:
-                return "Form";
-            case 1:
-                return "Records";
+            case TAB_FORM_POSITION:
+                return TAB_FORM_TITLE;
+            case TAB_RECORDS_POSITION:
+                return TAB_RECORDS_TITLE;
             default:
                 Log.d("debug","Invalid tab index");
         }

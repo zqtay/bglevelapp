@@ -117,6 +117,15 @@ public class Util {
         return iDate;
     }
 
+    public static String formatDateString(String date) {
+        if (date != null && !date.isEmpty()) {
+            return date.substring(0, 4) + "/" + date.substring(4, 6) + "/" + date.substring(6, 8);
+        }
+        else {
+            return "";
+        }
+    }
+
     public static void printRecord(BGRecord record) {
         if (record == null) {
             Log.d("debug","Null record");

@@ -69,13 +69,12 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         // Get the data model based on position
         BGRecord record = records.get(position);
 
-        String date = String.valueOf(record.date);
-        date = date.substring(0,4) + "/" + date.substring(4,6) + "/" + date.substring(6,8);
+        String date = Util.formatDateString(String.valueOf(record.date));
         String event = Util.convertEvent(record.event);
-        String bglevel_pre = (record.bglevel_pre != null) ? String.format("%.01f", record.bglevel_pre) : "-";
-        String bglevel_post = (record.bglevel_post != null) ? String.format("%.01f", record.bglevel_post) : "-";
-        String dose = (record.dose != null) ? String.format("%.01f", record.dose) : "-";
-        String notes = (record.notes != null) ? record.notes : "-";
+        String bglevel_pre = (record.bglevel_pre != null) ? String.format("%.01f", record.bglevel_pre) : "";
+        String bglevel_post = (record.bglevel_post != null) ? String.format("%.01f", record.bglevel_post) : "";
+        String dose = (record.dose != null) ? String.format("%.01f", record.dose) : "";
+        String notes = (record.notes != null) ? record.notes : "";
 
         holder.dateTextView.setText(date);
         holder.eventTextView.setText(event);
@@ -84,11 +83,10 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         holder.doseTextView.setText(dose);
         holder.notesTextView.setText(notes);
 
-        String finalDate = date;
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RecordInfoDialog dialog = new RecordInfoDialog(view.getContext(), finalDate, event, bglevel_pre, bglevel_post, dose, notes);
+                RecordInfoDialog dialog = new RecordInfoDialog(view.getContext(), date, event, bglevel_pre, bglevel_post, dose, notes);
                 //dialog.setCanceledOnTouchOutside(true);
                 dialog.show();
             }
