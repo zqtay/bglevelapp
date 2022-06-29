@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,14 @@ import java.util.Calendar;
 
 public class FormFragment extends Fragment {
 
+    DatePickerFragment datePicker;
+    String formDate;
+    String formEvent;
+    String formBgLevelPre;
+    String formBgLevelPost;
+    String formDose;
+    String formNotes;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,6 +53,7 @@ public class FormFragment extends Fragment {
 
         Button dateButton = (Button) view.findViewById(R.id.button_date);
         Button addButton = (Button) view.findViewById(R.id.button_add);
+        datePicker = new DatePickerFragment(dateButton);
 
         // Date button
         Calendar c = Calendar.getInstance();
@@ -66,19 +76,20 @@ public class FormFragment extends Fragment {
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
-        public static View viewToUpdate;
+        View viewToUpdate;
+        Calendar lastSetCal;
 
         DatePickerFragment(View view) {
             viewToUpdate = view;
+            lastSetCal = Calendar.getInstance();
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+            int year = lastSetCal.get(Calendar.YEAR);
+            int month = lastSetCal.get(Calendar.MONTH);
+            int day = lastSetCal.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(), this, year, month, day);
@@ -86,20 +97,28 @@ public class FormFragment extends Fragment {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             if (viewToUpdate instanceof Button) {
-                Calendar c = Calendar.getInstance();
-                c.set(Calendar.YEAR, year);
-                c.set(Calendar.MONTH, month);
-                c.set(Calendar.DAY_OF_MONTH, day);
-                String date = (new SimpleDateFormat(Util.DATE_PATTERN)).format(c.getTime());
+                lastSetCal.set(Calendar.YEAR, year);
+                lastSetCal.set(Calendar.MONTH, month);
+                lastSetCal.set(Calendar.DAY_OF_MONTH, day);
+                String date = (new SimpleDateFormat(Util.DATE_PATTERN)).format(lastSetCal.getTime());
                 ((Button)viewToUpdate).setText(date);
             }
+        }
+
+        public void setDate(String date) {
+            // date is formatted as yyyy/MM/dd
+            lastSetCal.set(Calendar.YEAR, Integer.parseInt(date.substring(0,4)));
+            lastSetCal.set(Calendar.MONTH, Integer.parseInt(date.substring(5,7)));
+            lastSetCal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date.substring(8,10)));
         }
     }
 
     public void showDatePickerDialog(View v) {
         FragmentActivity activity = getActivity();
-        DialogFragment newFragment = new DatePickerFragment(v);
-        newFragment.show(activity.getSupportFragmentManager(), "datePickerForm");
+        if (datePicker == null || !(datePicker instanceof  DatePickerFragment)) {
+            datePicker = new DatePickerFragment(v);
+        }
+        datePicker.show(activity.getSupportFragmentManager(), "datePickerForm");
     }
 
     public void onClickAdd(View v) {
@@ -140,12 +159,49 @@ public class FormFragment extends Fragment {
 
         // Hide keyboard
         try {
+            View focusedView = null;
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-            imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+            if ((focusedView = activity.getCurrentFocus()) != null) {
+                imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+            }
         } catch (Exception e) {
             Log.e("error", "setUserVisibleHint: ", e);
         }
         return true;
+    }
+
+    public void setFormValues(String date, String event, String bglevel_pre, String bglevel_post, String dose, String notes) {
+        formDate = date;
+        formEvent = event;
+        formBgLevelPre = bglevel_pre;
+        formBgLevelPost = bglevel_post;
+        formDose = dose;
+        formNotes = notes;
+    }
+
+    public void displayFormValues() {
+        Activity activity = getActivity();
+        if (formDate != null && !formDate.isEmpty()) {
+            ((Button) activity.findViewById(R.id.button_date)).setText(formDate);
+            datePicker.setDate(formDate);
+        }
+        if (formEvent != null)
+            ((Spinner) activity.findViewById(R.id.spinner_event1)).setSelection(Util.convertEvent(formEvent) - 1);
+        if (formBgLevelPre != null)
+            ((EditText) activity.findViewById(R.id.textInput_bglevel_pre)).setText(formBgLevelPre);
+        if (formBgLevelPost != null)
+            ((EditText) activity.findViewById(R.id.textInput_bglevel_post)).setText(formBgLevelPost);
+        if (formDose != null)
+            ((EditText) activity.findViewById(R.id.textInput_dose)).setText(formDose);
+        if (formNotes != null)
+            ((EditText) activity.findViewById(R.id.textInput_notes)).setText(formNotes);
+
+        formDate = null;
+        formEvent = null;
+        formBgLevelPre = null;
+        formBgLevelPost = null;
+        formDose = null;
+        formNotes = null;
     }
 }

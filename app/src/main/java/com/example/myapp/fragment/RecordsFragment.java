@@ -44,6 +44,8 @@ import java.util.List;
 
 public class RecordsFragment extends Fragment {
 
+    DatePickerFragment datePicker;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -71,9 +73,13 @@ public class RecordsFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             try {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                Activity activity = getActivity();
+                View focusedView = null;
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                if ((focusedView = activity.getCurrentFocus()) != null) {
+                    imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+                }
             } catch (Exception e) {
                 Log.e("error", "setUserVisibleHint: ", e);
             }
@@ -154,16 +160,18 @@ public class RecordsFragment extends Fragment {
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
+        Calendar lastSetCal;
+
         DatePickerFragment() {
+            lastSetCal = Calendar.getInstance();
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+            int year = lastSetCal.get(Calendar.YEAR);
+            int month = lastSetCal.get(Calendar.MONTH);
+            int day = lastSetCal.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(), this, year, month, day);
@@ -171,14 +179,13 @@ public class RecordsFragment extends Fragment {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             Activity activity = getActivity();
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.YEAR, year);
-            c.set(Calendar.MONTH, month);
-            c.set(Calendar.DAY_OF_MONTH, day);
-            int date = Integer.parseInt((new SimpleDateFormat(Util.DATE_PATTERN_DATA)).format(c.getTime()));
+            lastSetCal.set(Calendar.YEAR, year);
+            lastSetCal.set(Calendar.MONTH, month);
+            lastSetCal.set(Calendar.DAY_OF_MONTH, day);
+            int date = Integer.parseInt((new SimpleDateFormat(Util.DATE_PATTERN_DATA)).format(lastSetCal.getTime()));
             AsyncTask.execute(()-> {
                 List<BGRecord> records = AppDatabaseService.findRecordsByDate(date, activity.getApplicationContext());
-                getActivity().runOnUiThread( ()-> {
+                activity.runOnUiThread( ()-> {
                     RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.rv_records);
                     RecordsAdapter adapter = new RecordsAdapter(records);
                     rvRecords.setAdapter(adapter);
@@ -190,8 +197,10 @@ public class RecordsFragment extends Fragment {
 
     public boolean showDatePickerDialog(View v) {
         FragmentActivity activity = getActivity();
-        DialogFragment newFragment = new RecordsFragment.DatePickerFragment();
-        newFragment.show(activity.getSupportFragmentManager(), "datePickerRecords");
+        if (datePicker == null || !(datePicker instanceof RecordsFragment.DatePickerFragment)) {
+            datePicker = new RecordsFragment.DatePickerFragment();
+        }
+        datePicker.show(activity.getSupportFragmentManager(), "datePickerRecords");
         return true;
     }
 

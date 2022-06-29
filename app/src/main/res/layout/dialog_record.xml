@@ -6,6 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:backgroundTint="@color/divider_dark"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -47,7 +48,9 @@
                 android:id="@+id/dialog_divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:background="?android:attr/dividerHorizontal"
+                android:background="?android:attr/listDivider"
+                android:backgroundTint="@color/divider_dark"
+                android:backgroundTintMode="src_in"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dialog_textLabel_info" />
@@ -207,7 +210,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
-                android:background="?android:attr/dividerHorizontal"
+                android:background="?android:attr/listDivider"
+                android:backgroundTint="@color/divider_dark"
                 app:layout_constraintBottom_toTopOf="@+id/dialog_button_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -265,7 +269,8 @@
                     android:id="@+id/dialog_button_divider"
                     android:layout_width="1dp"
                     android:layout_height="0dp"
-                    android:background="?android:attr/dividerHorizontal"
+                    android:background="?android:attr/listDivider"
+                    android:backgroundTint="@color/divider_dark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/dialog_button_delete"
                     app:layout_constraintStart_toEndOf="@+id/dialog_button_edit"

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.myapp.MainActivity;
 import com.example.myapp.R;
 import com.example.myapp.db.AppDatabaseService;
 import com.example.myapp.util.Util;
@@ -39,6 +40,7 @@ public class RecordInfoDialog extends Dialog {
         this.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         ((Button) findViewById(R.id.dialog_button_delete)).setOnLongClickListener(this::onClickDelete);
+        ((Button) findViewById(R.id.dialog_button_edit)).setOnClickListener(this::onClickEdit);
     }
 
     public void fillDialogContent() {
@@ -55,6 +57,12 @@ public class RecordInfoDialog extends Dialog {
         byte dataEvent = Util.convertEvent(event);
         AppDatabaseService.deleteRecord(dataDate, dataEvent, v.getContext());
         return true;
+    }
+
+    public void onClickEdit(View v) {
+        MainActivity.tabAdapter.formFragment.setFormValues(date, event, bglevel_pre, bglevel_post, dose, notes);
+        MainActivity.viewPager.setCurrentItem(AppTabAdapter.TAB_FORM_POSITION);
+        dismiss();
     }
 }
 

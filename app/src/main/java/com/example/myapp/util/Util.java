@@ -119,6 +119,7 @@ public class Util {
 
     public static String formatDateString(String date) {
         if (date != null && !date.isEmpty()) {
+            date = date.trim();
             return date.substring(0, 4) + "/" + date.substring(4, 6) + "/" + date.substring(6, 8);
         }
         else {
