@@ -25,9 +25,14 @@ public class Util {
     public final static String DATE_PATTERN = "yyyy/MM/dd";
     public final static String DATE_PATTERN_DATA = "yyyyMMdd";
 
-    public static final int ACTIVITY_REQUEST_EXPORT_FILE = 0x9999;
+    public static final int ACTIVITY_REQUEST_EXPORT_FILE_BACKUP = 0x9001;
+    public static final int ACTIVITY_REQUEST_EXPORT_FILE_EXTENDED = 0x9002;
+    public static final byte EXPORT_FORMAT_BACKUP = 0x01;
+    public static final byte EXPORT_FORMAT_EXTENDED = 0x02;
 
-    public static final String BGRECORD_EXPORT_FILENAME = "BGRecord.txt";
+    public static final String BGRECORD_EXPORT_FILENAME_BACKUP = "BGRecordBackup.txt";
+    public static final String BGRECORD_EXPORT_FILENAME_EXTENDED = "BGRecordExt.txt";
+
     public static final String BGRECORD_HEADER = "date,event,bglevel_pre,bglevel_post,dose,notes\n";
     public static final String BGRECORD_HEADER_EXTENDED =
             "date," +

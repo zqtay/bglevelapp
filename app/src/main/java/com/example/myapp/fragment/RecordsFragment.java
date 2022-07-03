@@ -98,7 +98,7 @@ public class RecordsFragment extends Fragment {
         });
     }
 
-    public void onClickExport(View v) {
+    public void onClickExportBackup(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             if (!Environment.isExternalStorageManager()){
                 Intent getpermission = new Intent();
@@ -110,30 +110,56 @@ public class RecordsFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             i.addCategory(Intent.CATEGORY_DEFAULT);
-            startActivityForResult(Intent.createChooser(i, "Choose directory"), Util.ACTIVITY_REQUEST_EXPORT_FILE);
+            startActivityForResult(Intent.createChooser(i, "Choose directory"), Util.ACTIVITY_REQUEST_EXPORT_FILE_BACKUP);
         }
     }
 
-    public void exportFile(Uri exportUri) {
+    public void onClickExportExtended(View v) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            if (!Environment.isExternalStorageManager()){
+                Intent getpermission = new Intent();
+                getpermission.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(getpermission);
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            i.addCategory(Intent.CATEGORY_DEFAULT);
+            startActivityForResult(Intent.createChooser(i, "Choose directory"), Util.ACTIVITY_REQUEST_EXPORT_FILE_EXTENDED);
+        }
+    }
+
+    public void exportFile(Uri exportUri, byte exportFormat) {
         Context context = getActivity().getApplicationContext();
         String exportPath = FileUtil.getFullPathFromTreeUri(exportUri, context);
         Log.d("debug",exportPath);
+
         AsyncTask.execute(()-> {
+            String recordsText = "";
+            String fileName = "";
             List<BGRecord> records = AppDatabaseService.findAllRecord(context);
-            String textDisplay = Util.BGRECORD_HEADER_EXTENDED + Util.getRecordsTextExtended(records);
-            int exportResult = Util.writeToFile(textDisplay, exportPath, Util.BGRECORD_EXPORT_FILENAME);
+            switch (exportFormat) {
+                case Util.EXPORT_FORMAT_BACKUP:
+                    recordsText = Util.BGRECORD_HEADER + Util.getRecordsText(records);
+                    fileName = Util.BGRECORD_EXPORT_FILENAME_BACKUP;
+                    break;
+                case Util.EXPORT_FORMAT_EXTENDED:
+                    recordsText = Util.BGRECORD_HEADER_EXTENDED + Util.getRecordsTextExtended(records);
+                    fileName = Util.BGRECORD_EXPORT_FILENAME_EXTENDED;
+                    break;
+                default:
+                    break;
+            }
+
+            int exportResult = Util.writeToFile(recordsText, exportPath, fileName);
+            String successMsg = "File exported to: " + exportPath + "/" + fileName;
             getActivity().runOnUiThread(() -> {
                 if (exportResult == Util.RESULT_SUCCESS) {
-                    Toast.makeText(context,
-                                    "File exported to: " + exportPath + "/" + Util.BGRECORD_EXPORT_FILENAME,
-                                    Toast.LENGTH_LONG)
-                            .show();
+                    Toast.makeText(context, successMsg, Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(context,
-                                    "File export failed",
-                                    Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(context, "File export failed", Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -144,11 +170,18 @@ public class RecordsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch(requestCode) {
-            case Util.ACTIVITY_REQUEST_EXPORT_FILE:
+            case Util.ACTIVITY_REQUEST_EXPORT_FILE_BACKUP:
                 if (data != null) {
                     Uri exportUri = data.getData();
                     Log.i("Test", "Result URI " + exportUri);
-                    exportFile(exportUri);
+                    exportFile(exportUri, Util.EXPORT_FORMAT_BACKUP);
+                }
+                break;
+            case Util.ACTIVITY_REQUEST_EXPORT_FILE_EXTENDED:
+                if (data != null) {
+                    Uri exportUri = data.getData();
+                    Log.i("Test", "Result URI " + exportUri);
+                    exportFile(exportUri, Util.EXPORT_FORMAT_EXTENDED);
                 }
                 break;
         }
@@ -210,8 +243,11 @@ public class RecordsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.toolbar_menu_action_export:
-                onClickExport(null);
+            case R.id.toolbar_menu_action_export_backup:
+                onClickExportBackup(null);
+                return true;
+            case R.id.toolbar_menu_action_export_extended:
+                onClickExportExtended(null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

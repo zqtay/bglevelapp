@@ -12,8 +12,12 @@
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/toolbar_menu_action_export"
-                android:title="@string/text_label_export"
+                android:id="@+id/toolbar_menu_action_export_backup"
+                android:title="@string/text_label_export_backup"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/toolbar_menu_action_export_extended"
+                android:title="@string/text_label_export_extended"
                 app:showAsAction="never" />
         </menu>
     </item>

@@ -14,6 +14,9 @@
     <string name="text_label_reload">Reload</string>
     <string name="text_label_export">Export</string>
     <string name="text_label_recordInfo">Record Info</string>
+    <string name="text_label_export_backup">Backup</string>
+    <string name="text_label_export_extended">Export</string>
+
     <string name="text_placeholder_date">XXXX/XX/XX</string>
     <string name="text_placeholder_time">XX:XX</string>
     <string name="text_placeholder_float">XX.X</string>
