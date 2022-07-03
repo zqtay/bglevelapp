@@ -57,8 +57,6 @@ public class RecordsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Activity activity = getActivity();
-
         super.onViewCreated(view, savedInstanceState);
 
         Button reloadButton = (Button) view.findViewById(R.id.button_reload);
@@ -117,12 +115,11 @@ public class RecordsFragment extends Fragment {
     }
 
     public void exportFile(Uri exportUri) {
-        Activity activity = getActivity();
         Context context = getActivity().getApplicationContext();
         String exportPath = FileUtil.getFullPathFromTreeUri(exportUri, context);
         Log.d("debug",exportPath);
         AsyncTask.execute(()-> {
-            List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
+            List<BGRecord> records = AppDatabaseService.findAllRecord(context);
             String textDisplay = Util.BGRECORD_HEADER_EXTENDED + Util.getRecordsTextExtended(records);
             int exportResult = Util.writeToFile(textDisplay, exportPath, Util.BGRECORD_EXPORT_FILENAME);
             getActivity().runOnUiThread(() -> {

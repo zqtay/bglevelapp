@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,14 +58,9 @@ public class FormFragment extends Fragment {
 
         // Date button
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time => "+c.getTime());
-
-        SimpleDateFormat df = new SimpleDateFormat(Util.DATE_PATTERN);
-        String formattedDate = df.format(c.getTime());
-
-        if (formattedDate != null) {
-            dateButton.setText(formattedDate);
-        }
+        Log.d("debug","Current time => "+c.getTime());
+        String formattedDate = (new SimpleDateFormat(Util.DATE_PATTERN)).format(c.getTime());
+        dateButton.setText(formattedDate);
 
         // Setup onclick events
         dateButton.setOnClickListener(this::showDatePickerDialog);
@@ -96,12 +92,12 @@ public class FormFragment extends Fragment {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            if (viewToUpdate instanceof Button) {
-                lastSetCal.set(Calendar.YEAR, year);
-                lastSetCal.set(Calendar.MONTH, month);
-                lastSetCal.set(Calendar.DAY_OF_MONTH, day);
+            lastSetCal.set(Calendar.YEAR, year);
+            lastSetCal.set(Calendar.MONTH, month);
+            lastSetCal.set(Calendar.DAY_OF_MONTH, day);
+            if (viewToUpdate instanceof TextView) {
                 String date = (new SimpleDateFormat(Util.DATE_PATTERN)).format(lastSetCal.getTime());
-                ((Button)viewToUpdate).setText(date);
+                ((TextView)viewToUpdate).setText(date);
             }
         }
 
@@ -115,7 +111,7 @@ public class FormFragment extends Fragment {
 
     public void showDatePickerDialog(View v) {
         FragmentActivity activity = getActivity();
-        if (datePicker == null || !(datePicker instanceof  DatePickerFragment)) {
+        if (datePicker == null || !(datePicker instanceof DatePickerFragment)) {
             datePicker = new DatePickerFragment(v);
         }
         datePicker.show(activity.getSupportFragmentManager(), "datePickerForm");
