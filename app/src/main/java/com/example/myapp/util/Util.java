@@ -26,8 +26,18 @@ public class Util {
     public final static String DATE_PATTERN_DATA = "yyyyMMdd";
 
     public static final int ACTIVITY_REQUEST_EXPORT_FILE = 0x9999;
-    public static final String BGRECORD_HEADER = "date,event,bglevel_pre,bglevel_post,dose,notes\n";
 
+    public static final String BGRECORD_EXPORT_FILENAME = "BGRecord.txt";
+    public static final String BGRECORD_HEADER = "date,event,bglevel_pre,bglevel_post,dose,notes\n";
+    public static final String BGRECORD_HEADER_EXTENDED =
+            "date," +
+            "wakeup_bglevel_pre,wakeup_bglevel_post,wakeup_dose,wakeup_notes," +
+            "breakfast_bglevel_pre,breakfast_bglevel_post,breakfast_dose,breakfast_notes," +
+            "lunch_bglevel_pre,lunch_bglevel_post,lunch_dose,lunch_notes," +
+            "snack_bglevel_pre,snack_bglevel_post,snack_dose,snack_notes," +
+            "dinner_bglevel_pre,dinner_bglevel_post,dinner_dose,dinner_notes," +
+            "supper_bglevel_pre,supper_bglevel_post,supper_dose,supper_notes," +
+            "sleep_bglevel_pre,sleep_bglevel_post,sleep_dose,sleep_notes\n";
 
     public static byte convertEvent(String event) {
         byte result = (byte)0;
@@ -143,26 +153,77 @@ public class Util {
     public static String getRecordsText(List<BGRecord> records) {
         String recordsText = "";
         String recordLine = "";
+        BGRecord record;
 
         if (records == null) {
             return recordsText;
         }
 
         for (int i = 0; i < records.size(); i++) {
+            record = records.get(i);
             recordLine = "";
-            recordLine += String.valueOf(records.get(i).date);
-            recordLine += (",");
-            recordLine += String.valueOf(records.get(i).event);
-            recordLine += (",");
-            recordLine += (records.get(i).bglevel_pre != null) ? String.format("%.01f", records.get(i).bglevel_pre) : null;
-            recordLine += (",");
-            recordLine += (records.get(i).bglevel_post != null) ? String.format("%.01f", records.get(i).bglevel_post) : null;
-            recordLine += (",");
-            recordLine += (records.get(i).dose != null) ? String.format("%.01f", records.get(i).dose) : null;
-            recordLine += (",");
-            recordLine += records.get(i).notes;
-            recordLine += ("\n");
+            recordLine += String.valueOf(record.date);
+            recordLine += ",";
+            recordLine += String.valueOf(record.event);
+            recordLine += ",";
+            recordLine += (record.bglevel_pre != null) ? String.format("%.01f", record.bglevel_pre) : "";
+            recordLine += ",";
+            recordLine += (record.bglevel_post != null) ? String.format("%.01f", record.bglevel_post) : "";
+            recordLine += ",";
+            recordLine += (record.dose != null) ? String.format("%.01f", record.dose) : "";
+            recordLine += ",";
+            recordLine += (record.notes != null) ? "\""+record.notes+"\"" : "";
+            recordLine += "\n";
             recordsText += recordLine;
+        }
+
+        return recordsText;
+    }
+
+    public static String getRecordsTextExtended(List<BGRecord> records) {
+        String recordsText = "";
+        String recordLine = "";
+        BGRecord record;
+        int recordsSize = records.size();
+        byte lastEvent = 0;
+
+        if (records == null) {
+            return recordsText;
+        }
+
+        for (int i = 0; i < recordsSize; i++) {
+            record = records.get(i);
+
+            // Start of next date record
+            if (lastEvent == 0) {
+                recordLine += String.valueOf(record.date);
+                recordLine += ",";
+            }
+
+            // Skip empty event data
+            for (int j = 0; j < (record.event-lastEvent-1); j++) {
+                recordLine += ",,,,";
+            }
+
+            recordLine += (record.bglevel_pre != null) ? String.format("%.01f", record.bglevel_pre) : "";
+            recordLine += ",";
+            recordLine += (record.bglevel_post != null) ? String.format("%.01f", record.bglevel_post) : "";
+            recordLine += ",";
+            recordLine += (record.dose != null) ? String.format("%.01f", record.dose) : "";
+            recordLine += ",";
+            recordLine += (record.notes != null) ? "\""+record.notes+"\"" : "";
+
+            // Final record or next record is different date
+            if (i == (recordsSize-1) || record.date != records.get(i+1).date) {
+                recordLine += ("\n");
+                recordsText += recordLine;
+                lastEvent = 0;
+                recordLine = "";
+            }
+            else {
+                recordLine += ",";
+                lastEvent = record.event;
+            }
         }
 
         return recordsText;

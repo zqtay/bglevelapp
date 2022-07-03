@@ -123,13 +123,13 @@ public class RecordsFragment extends Fragment {
         Log.d("debug",exportPath);
         AsyncTask.execute(()-> {
             List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
-            String textDisplay = Util.BGRECORD_HEADER + Util.getRecordsText(records);
-            int exportResult = Util.writeToFile(textDisplay, exportPath, "BGRecord.txt");
+            String textDisplay = Util.BGRECORD_HEADER_EXTENDED + Util.getRecordsTextExtended(records);
+            int exportResult = Util.writeToFile(textDisplay, exportPath, Util.BGRECORD_EXPORT_FILENAME);
             getActivity().runOnUiThread(() -> {
                 if (exportResult == Util.RESULT_SUCCESS) {
                     Toast.makeText(context,
-                                    "File exported to: " + exportPath + "\\" + "BGRecord.txt",
-                                    Toast.LENGTH_SHORT)
+                                    "File exported to: " + exportPath + "/" + Util.BGRECORD_EXPORT_FILENAME,
+                                    Toast.LENGTH_LONG)
                             .show();
                 }
                 else {
