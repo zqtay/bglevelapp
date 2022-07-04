@@ -16,6 +16,7 @@
     <string name="text_label_recordInfo">Record Info</string>
     <string name="text_label_export_backup">Backup</string>
     <string name="text_label_export_extended">Export</string>
+    <string name="text_label_import">Import</string>
 
     <string name="text_placeholder_date">XXXX/XX/XX</string>
     <string name="text_placeholder_time">XX:XX</string>

@@ -19,6 +19,10 @@
                 android:id="@+id/toolbar_menu_action_export_extended"
                 android:title="@string/text_label_export_extended"
                 app:showAsAction="never" />
+            <item
+                android:id="@+id/toolbar_menu_action_import"
+                android:title="@string/text_label_import"
+                app:showAsAction="never" />
         </menu>
     </item>
 </menu>

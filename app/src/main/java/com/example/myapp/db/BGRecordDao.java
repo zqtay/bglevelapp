@@ -33,7 +33,7 @@ public interface BGRecordDao {
     Completable insert(BGRecord record);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertAll(BGRecord... records);
+    Completable insertAll(List<BGRecord> records);
 
     @Update
     Completable update(BGRecord record);

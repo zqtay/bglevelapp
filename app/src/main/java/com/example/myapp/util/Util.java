@@ -8,13 +8,17 @@ import android.util.Log;
 
 import com.example.myapp.db.BGRecord;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemAlreadyExistsException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Util {
@@ -27,6 +31,7 @@ public class Util {
 
     public static final int ACTIVITY_REQUEST_EXPORT_FILE_BACKUP = 0x9001;
     public static final int ACTIVITY_REQUEST_EXPORT_FILE_EXTENDED = 0x9002;
+    public static final int ACTIVITY_REQUEST_IMPORT_FILE = 0x9003;
     public static final byte EXPORT_FORMAT_BACKUP = 0x01;
     public static final byte EXPORT_FORMAT_EXTENDED = 0x02;
 
@@ -234,6 +239,47 @@ public class Util {
         return recordsText;
     }
 
+    public static List<BGRecord> getRecordsFromText(String recordsText) {
+        if (recordsText == null) {
+            return null;
+        }
+        List<BGRecord> records = new ArrayList<BGRecord>();
+        String[] saRecords = recordsText.trim().split("\n");
+        String[] saRecordInfo;
+        int date;
+        byte event;
+        Float bglevel_pre;
+        Float bglevel_post;
+        Float dose;
+        String notes;
+
+        // Skip header
+        int iLine = saRecords[0].trim().equals(BGRECORD_HEADER.trim()) ? 1 : 0;
+
+        for (; iLine < saRecords.length; iLine++) {
+            try {
+                saRecordInfo = saRecords[iLine].split(",", -1);
+                date = Integer.parseInt(saRecordInfo[0]);
+                event = Byte.parseByte(saRecordInfo[1]);
+                bglevel_pre = !saRecordInfo[2].isEmpty() ? Float.parseFloat(saRecordInfo[2]) : null;
+                bglevel_post = !saRecordInfo[3].isEmpty() ? Float.parseFloat(saRecordInfo[3]) : null;
+                dose = !saRecordInfo[4].isEmpty() ? Float.parseFloat(saRecordInfo[4]) : null;
+                notes = saRecordInfo[5];
+                // Remove starting and ending quotes
+                if (notes.startsWith("\"") && notes.endsWith("\"")) {
+                    notes = notes.substring(1, notes.length() - 1);
+                }
+                records.add(new BGRecord(date, event, bglevel_pre, bglevel_post, dose, notes));
+            }
+            catch (Exception e) {
+                Log.e("Exception", String.format("%s\nParse records text failed at line %d: %s",
+                        e.toString(), iLine+1, saRecords[iLine]));
+                return null;
+            }
+        }
+        return records;
+    }
+
     public static int writeToFile(String data, String filePath, String fileName) {
         int result = RESULT_FAILED;
         File fileDir = new File(filePath);
@@ -261,5 +307,27 @@ public class Util {
             result = RESULT_FAILED;
         }
         return result;
+    }
+
+    public static String readFromFile(Uri fileUri, Context context) {
+        //Read text from file
+        StringBuilder text = new StringBuilder();
+
+        try {
+            InputStreamReader isr = new InputStreamReader(context.getContentResolver().openInputStream(fileUri));
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File read failed: " + e.toString());
+            return null;
+        }
+        return text.toString();
     }
 }

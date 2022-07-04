@@ -38,6 +38,8 @@ import com.example.myapp.util.Util;
 import com.example.myapp.db.AppDatabaseService;
 import com.example.myapp.db.BGRecord;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -165,6 +167,48 @@ public class RecordsFragment extends Fragment {
         });
     }
 
+    public void onClickImport(View v) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            if (!Environment.isExternalStorageManager()){
+                Intent getpermission = new Intent();
+                getpermission.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(getpermission);
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+            chooseFile.setType("*/*");
+            startActivityForResult(Intent.createChooser(chooseFile, "Choose a file"), Util.ACTIVITY_REQUEST_IMPORT_FILE);
+        }
+    }
+
+    public void importFile(Uri fileUri) {
+        Context context = getActivity().getApplicationContext();
+
+        AsyncTask.execute(()-> {
+            String recordsText  = Util.readFromFile(fileUri, context);
+            if (recordsText == null) {
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(context, "Failed to read file!", Toast.LENGTH_SHORT).show();
+                });
+                return;
+            }
+
+            List<BGRecord> records = Util.getRecordsFromText(recordsText);
+            if (records == null) {
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(context, "Invalid file content!", Toast.LENGTH_SHORT).show();
+                });
+                return;
+            }
+
+            AppDatabaseService.insertAllRecords(records, context);
+
+            onClickReload(null);
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -173,15 +217,19 @@ public class RecordsFragment extends Fragment {
             case Util.ACTIVITY_REQUEST_EXPORT_FILE_BACKUP:
                 if (data != null) {
                     Uri exportUri = data.getData();
-                    Log.i("Test", "Result URI " + exportUri);
                     exportFile(exportUri, Util.EXPORT_FORMAT_BACKUP);
                 }
                 break;
             case Util.ACTIVITY_REQUEST_EXPORT_FILE_EXTENDED:
                 if (data != null) {
                     Uri exportUri = data.getData();
-                    Log.i("Test", "Result URI " + exportUri);
                     exportFile(exportUri, Util.EXPORT_FORMAT_EXTENDED);
+                }
+                break;
+            case Util.ACTIVITY_REQUEST_IMPORT_FILE:
+                if (data != null) {
+                    Uri fileUri = data.getData();
+                    importFile(fileUri);
                 }
                 break;
         }
@@ -248,6 +296,9 @@ public class RecordsFragment extends Fragment {
                 return true;
             case R.id.toolbar_menu_action_export_extended:
                 onClickExportExtended(null);
+                return true;
+            case R.id.toolbar_menu_action_import:
+                onClickImport(null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

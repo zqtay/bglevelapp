@@ -152,6 +152,19 @@ public class AppDatabaseService {
                 }, Throwable::printStackTrace );
     }
 
+    public static void insertAllRecords(List<BGRecord> records, Context context) {
+        if (dao == null) {
+            buildDatabase(context);
+        }
+        dao.insertAll(records)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    Toast.makeText(context, "Records saved", Toast.LENGTH_SHORT)
+                            .show();
+                }, Throwable::printStackTrace );
+    }
+
     public static void getView(Context context) {
         if (dao == null) {
             buildDatabase(context);
