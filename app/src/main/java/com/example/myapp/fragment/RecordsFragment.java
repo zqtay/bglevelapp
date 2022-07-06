@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.myapp.util.FileUtil;
 import com.example.myapp.R;
@@ -46,6 +47,7 @@ import java.util.List;
 
 public class RecordsFragment extends Fragment {
 
+    Activity activity;
     DatePickerFragment datePicker;
 
     @Nullable
@@ -61,9 +63,20 @@ public class RecordsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        activity = getActivity();
+
         Button reloadButton = (Button) view.findViewById(R.id.button_reload);
         reloadButton.setOnClickListener(this::onClickReload);
         reloadButton.setOnLongClickListener(this::showDatePickerDialog);
+
+        SwipeRefreshLayout swipeCont = (SwipeRefreshLayout) view.findViewById(R.id.swipe_records);
+
+        swipeCont.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onSwipeReload(swipeCont);
+            }
+        });
 
         onClickReload(null);
     }
@@ -73,7 +86,6 @@ public class RecordsFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             try {
-                Activity activity = getActivity();
                 View focusedView = null;
                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -86,16 +98,28 @@ public class RecordsFragment extends Fragment {
         }
     }
 
-    public void onClickReload(View v) {
-        Activity activity = getActivity();
+    public void updateRecordsView(List<BGRecord> records) {
+        RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.rv_records);
+        RecordsAdapter adapter = new RecordsAdapter(records);
+        rvRecords.setAdapter(adapter);
+        rvRecords.setLayoutManager(new LinearLayoutManager(activity));
+    }
 
+    public void onClickReload(View v) {
         AsyncTask.execute(()-> {
             List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
-            getActivity().runOnUiThread( ()-> {
-                RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.rv_records);
-                RecordsAdapter adapter = new RecordsAdapter(records);
-                rvRecords.setAdapter(adapter);
-                rvRecords.setLayoutManager(new LinearLayoutManager(activity));
+            activity.runOnUiThread( ()-> {
+                updateRecordsView(records);
+            });
+        });
+    }
+
+    public void onSwipeReload(SwipeRefreshLayout swipeCont) {
+        AsyncTask.execute(()-> {
+            List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
+            activity.runOnUiThread( ()-> {
+                updateRecordsView(records);
+                swipeCont.setRefreshing(false);
             });
         });
     }
@@ -133,7 +157,7 @@ public class RecordsFragment extends Fragment {
     }
 
     public void exportFile(Uri exportUri, byte exportFormat) {
-        Context context = getActivity().getApplicationContext();
+        Context context = activity.getApplicationContext();
         String exportPath = FileUtil.getFullPathFromTreeUri(exportUri, context);
         Log.d("debug",exportPath);
 
@@ -156,7 +180,7 @@ public class RecordsFragment extends Fragment {
 
             int exportResult = Util.writeToFile(recordsText, exportPath, fileName);
             String successMsg = "File exported to: " + exportPath + "/" + fileName;
-            getActivity().runOnUiThread(() -> {
+            activity.runOnUiThread(() -> {
                 if (exportResult == Util.RESULT_SUCCESS) {
                     Toast.makeText(context, successMsg, Toast.LENGTH_LONG).show();
                 }
@@ -184,12 +208,12 @@ public class RecordsFragment extends Fragment {
     }
 
     public void importFile(Uri fileUri) {
-        Context context = getActivity().getApplicationContext();
+        Context context = activity.getApplicationContext();
 
         AsyncTask.execute(()-> {
             String recordsText  = Util.readFromFile(fileUri, context);
             if (recordsText == null) {
-                getActivity().runOnUiThread(() -> {
+                activity.runOnUiThread(() -> {
                     Toast.makeText(context, "Failed to read file!", Toast.LENGTH_SHORT).show();
                 });
                 return;
@@ -197,7 +221,7 @@ public class RecordsFragment extends Fragment {
 
             List<BGRecord> records = Util.getRecordsFromText(recordsText);
             if (records == null) {
-                getActivity().runOnUiThread(() -> {
+                activity.runOnUiThread(() -> {
                     Toast.makeText(context, "Invalid file content!", Toast.LENGTH_SHORT).show();
                 });
                 return;
@@ -274,11 +298,10 @@ public class RecordsFragment extends Fragment {
     }
 
     public boolean showDatePickerDialog(View v) {
-        FragmentActivity activity = getActivity();
         if (datePicker == null || !(datePicker instanceof RecordsFragment.DatePickerFragment)) {
             datePicker = new RecordsFragment.DatePickerFragment();
         }
-        datePicker.show(activity.getSupportFragmentManager(), "datePickerRecords");
+        datePicker.show(((FragmentActivity) activity).getSupportFragmentManager(), "datePickerRecords");
         return true;
     }
 

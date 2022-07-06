@@ -32,6 +32,7 @@ import java.util.Calendar;
 
 public class FormFragment extends Fragment {
 
+    Activity activity;
     DatePickerFragment datePicker;
     String formDate;
     String formEvent;
@@ -51,6 +52,8 @@ public class FormFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        activity = getActivity();
 
         Button dateButton = (Button) view.findViewById(R.id.button_date);
         Button addButton = (Button) view.findViewById(R.id.button_add);
@@ -110,15 +113,13 @@ public class FormFragment extends Fragment {
     }
 
     public void showDatePickerDialog(View v) {
-        FragmentActivity activity = getActivity();
         if (datePicker == null || !(datePicker instanceof DatePickerFragment)) {
             datePicker = new DatePickerFragment(v);
         }
-        datePicker.show(activity.getSupportFragmentManager(), "datePickerForm");
+        datePicker.show(((FragmentActivity)activity).getSupportFragmentManager(), "datePickerForm");
     }
 
     public void onClickAdd(View v) {
-        Activity activity = getActivity();
         String date = ((Button) activity.findViewById(R.id.button_date)).getText().toString();
         String event1 = ((Spinner) activity.findViewById(R.id.spinner_event1)).getSelectedItem().toString();
         String bglevel_pre = ((EditText) activity.findViewById(R.id.textInput_bglevel_pre)).getText().toString();
@@ -147,7 +148,6 @@ public class FormFragment extends Fragment {
     }
 
     public boolean onLongClickClear(View v) {
-        Activity activity = getActivity();
         ((EditText) activity.findViewById(R.id.textInput_bglevel_pre)).setText("");
         ((EditText) activity.findViewById(R.id.textInput_bglevel_post)).setText("");
         ((EditText) activity.findViewById(R.id.textInput_dose)).setText("");
@@ -177,7 +177,6 @@ public class FormFragment extends Fragment {
     }
 
     public void displayFormValues() {
-        Activity activity = getActivity();
         if (formDate != null && !formDate.isEmpty()) {
             ((Button) activity.findViewById(R.id.button_date)).setText(formDate);
             datePicker.setDate(formDate);
