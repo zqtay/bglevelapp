@@ -65,12 +65,7 @@ public class RecordsFragment extends Fragment {
 
         activity = getActivity();
 
-        Button reloadButton = (Button) view.findViewById(R.id.button_reload);
-        reloadButton.setOnClickListener(this::onClickReload);
-        reloadButton.setOnLongClickListener(this::showDatePickerDialog);
-
         SwipeRefreshLayout swipeCont = (SwipeRefreshLayout) view.findViewById(R.id.swipe_records);
-
         swipeCont.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -322,6 +317,9 @@ public class RecordsFragment extends Fragment {
                 return true;
             case R.id.toolbar_menu_action_import:
                 onClickImport(null);
+                return true;
+            case R.id.toolbar_action_filter:
+                showDatePickerDialog(null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
