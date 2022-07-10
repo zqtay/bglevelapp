@@ -55,8 +55,8 @@ public class FormFragment extends Fragment {
 
         activity = getActivity();
 
-        Button dateButton = (Button) view.findViewById(R.id.button_date);
-        Button addButton = (Button) view.findViewById(R.id.button_add);
+        Button dateButton = (Button) view.findViewById(R.id.form_button_date);
+        Button addButton = (Button) view.findViewById(R.id.form_button_add);
         datePicker = new DatePickerFragment(dateButton);
 
         // Date button
@@ -120,12 +120,12 @@ public class FormFragment extends Fragment {
     }
 
     public void onClickAdd(View v) {
-        String date = ((Button) activity.findViewById(R.id.button_date)).getText().toString();
-        String event1 = ((Spinner) activity.findViewById(R.id.spinner_event1)).getSelectedItem().toString();
-        String bglevel_pre = ((EditText) activity.findViewById(R.id.textInput_bglevel_pre)).getText().toString();
-        String bglevel_post = ((EditText) activity.findViewById(R.id.textInput_bglevel_post)).getText().toString();
-        String dose = ((EditText) activity.findViewById(R.id.textInput_dose)).getText().toString();
-        String notes = ((EditText) activity.findViewById(R.id.textInput_notes)).getText().toString();
+        String date = ((Button) activity.findViewById(R.id.form_button_date)).getText().toString();
+        String event1 = ((Spinner) activity.findViewById(R.id.form_spinner_event)).getSelectedItem().toString();
+        String bglevel_pre = ((EditText) activity.findViewById(R.id.form_input_bgLevelPre)).getText().toString();
+        String bglevel_post = ((EditText) activity.findViewById(R.id.form_input_bgLevelPost)).getText().toString();
+        String dose = ((EditText) activity.findViewById(R.id.form_input_dose)).getText().toString();
+        String notes = ((EditText) activity.findViewById(R.id.form_input_notes)).getText().toString();
 
         int dataDate = Util.convertDate(date);
         byte dataEvent = Util.convertEvent(event1);
@@ -148,10 +148,10 @@ public class FormFragment extends Fragment {
     }
 
     public boolean onLongClickClear(View v) {
-        ((EditText) activity.findViewById(R.id.textInput_bglevel_pre)).setText("");
-        ((EditText) activity.findViewById(R.id.textInput_bglevel_post)).setText("");
-        ((EditText) activity.findViewById(R.id.textInput_dose)).setText("");
-        ((EditText) activity.findViewById(R.id.textInput_notes)).setText("");
+        ((EditText) activity.findViewById(R.id.form_input_bgLevelPre)).setText("");
+        ((EditText) activity.findViewById(R.id.form_input_bgLevelPost)).setText("");
+        ((EditText) activity.findViewById(R.id.form_input_dose)).setText("");
+        ((EditText) activity.findViewById(R.id.form_input_notes)).setText("");
 
         // Hide keyboard
         try {
@@ -178,19 +178,19 @@ public class FormFragment extends Fragment {
 
     public void displayFormValues() {
         if (formDate != null && !formDate.isEmpty()) {
-            ((Button) activity.findViewById(R.id.button_date)).setText(formDate);
+            ((Button) activity.findViewById(R.id.form_button_date)).setText(formDate);
             datePicker.setDate(formDate);
         }
         if (formEvent != null)
-            ((Spinner) activity.findViewById(R.id.spinner_event1)).setSelection(Util.convertEvent(formEvent) - 1);
+            ((Spinner) activity.findViewById(R.id.form_spinner_event)).setSelection(Util.convertEvent(formEvent) - 1);
         if (formBgLevelPre != null)
-            ((EditText) activity.findViewById(R.id.textInput_bglevel_pre)).setText(formBgLevelPre);
+            ((EditText) activity.findViewById(R.id.form_input_bgLevelPre)).setText(formBgLevelPre);
         if (formBgLevelPost != null)
-            ((EditText) activity.findViewById(R.id.textInput_bglevel_post)).setText(formBgLevelPost);
+            ((EditText) activity.findViewById(R.id.form_input_bgLevelPost)).setText(formBgLevelPost);
         if (formDose != null)
-            ((EditText) activity.findViewById(R.id.textInput_dose)).setText(formDose);
+            ((EditText) activity.findViewById(R.id.form_input_dose)).setText(formDose);
         if (formNotes != null)
-            ((EditText) activity.findViewById(R.id.textInput_notes)).setText(formNotes);
+            ((EditText) activity.findViewById(R.id.form_input_notes)).setText(formNotes);
 
         formDate = null;
         formEvent = null;

@@ -3,11 +3,8 @@ package com.example.myapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.myapp.fragment.AppTabAdapter;
@@ -26,12 +23,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
         // Tab and fragments
         tabAdapter = new AppTabAdapter(getSupportFragmentManager());
-        viewPager = findViewById(R.id.viewPager);
+        viewPager = findViewById(R.id.main_viewPager);
         viewPager.setAdapter(tabAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -48,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {}
         });
 
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        TabLayout tabLayout = findViewById(R.id.main_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
     }
 

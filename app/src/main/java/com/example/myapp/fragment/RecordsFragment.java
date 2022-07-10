@@ -19,9 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,8 +37,6 @@ import com.example.myapp.util.Util;
 import com.example.myapp.db.AppDatabaseService;
 import com.example.myapp.db.BGRecord;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -65,7 +61,7 @@ public class RecordsFragment extends Fragment {
 
         activity = getActivity();
 
-        SwipeRefreshLayout swipeCont = (SwipeRefreshLayout) view.findViewById(R.id.swipe_records);
+        SwipeRefreshLayout swipeCont = (SwipeRefreshLayout) view.findViewById(R.id.records_swipe);
         swipeCont.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -94,7 +90,7 @@ public class RecordsFragment extends Fragment {
     }
 
     public void updateRecordsView(List<BGRecord> records) {
-        RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.rv_records);
+        RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.records_rv);
         RecordsAdapter adapter = new RecordsAdapter(records);
         rvRecords.setAdapter(adapter);
         rvRecords.setLayoutManager(new LinearLayoutManager(activity));
@@ -283,7 +279,7 @@ public class RecordsFragment extends Fragment {
             AsyncTask.execute(()-> {
                 List<BGRecord> records = AppDatabaseService.findRecordsByDate(date, activity.getApplicationContext());
                 activity.runOnUiThread( ()-> {
-                    RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.rv_records);
+                    RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.records_rv);
                     RecordsAdapter adapter = new RecordsAdapter(records);
                     rvRecords.setAdapter(adapter);
                     rvRecords.setLayoutManager(new LinearLayoutManager(activity));
@@ -309,10 +305,10 @@ public class RecordsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.toolbar_menu_action_export_backup:
+            case R.id.toolbar_menu_action_exportBackup:
                 onClickExportBackup(null);
                 return true;
-            case R.id.toolbar_menu_action_export_extended:
+            case R.id.toolbar_menu_action_exportExtended:
                 onClickExportExtended(null);
                 return true;
             case R.id.toolbar_menu_action_import:

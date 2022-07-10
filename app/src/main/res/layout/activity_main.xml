@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="?attr/colorPrimary"
@@ -19,28 +19,30 @@
         app:titleTextColor="@color/white" />
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/main_viewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar">
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/main_tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="6dp"
             android:background="@color/white">
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/main_tab_form"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_label_form" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/main_tab_records"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_label_records" />

@@ -21,12 +21,12 @@
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/toolbar_menu_action_export_backup"
-                android:title="@string/text_label_export_backup"
+                android:id="@+id/toolbar_menu_action_exportBackup"
+                android:title="@string/text_label_exportBackup"
                 app:showAsAction="never" />
             <item
-                android:id="@+id/toolbar_menu_action_export_extended"
-                android:title="@string/text_label_export_extended"
+                android:id="@+id/toolbar_menu_action_exportExtended"
+                android:title="@string/text_label_exportExtended"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/toolbar_menu_action_import"

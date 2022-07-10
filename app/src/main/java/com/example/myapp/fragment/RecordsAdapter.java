@@ -1,21 +1,15 @@
 package com.example.myapp.fragment;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapp.MainActivity;
 import com.example.myapp.R;
 import com.example.myapp.db.BGRecord;
 import com.example.myapp.util.Util;
@@ -42,13 +36,13 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         public ViewHolder(View view) {
             super(view);
 
-            cardView = (CardView) itemView.findViewById(R.id.cardView);
-            dateTextView = (TextView) itemView.findViewById(R.id.card_textView_date);
-            eventTextView = (TextView) itemView.findViewById(R.id.card_textView_event);
-            bgLevelPreTextView = (TextView) itemView.findViewById(R.id.card_textView_bglevel_pre);
-            bgLevelPostTextView = (TextView) itemView.findViewById(R.id.card_textView_bglevel_post);
-            doseTextView = (TextView) itemView.findViewById(R.id.card_textView_dose);
-            notesTextView = (TextView) itemView.findViewById(R.id.card_textView_notes);
+            cardView = (CardView) itemView.findViewById(R.id.record_cardView);
+            dateTextView = (TextView) itemView.findViewById(R.id.record_view_date);
+            eventTextView = (TextView) itemView.findViewById(R.id.record_view_event);
+            bgLevelPreTextView = (TextView) itemView.findViewById(R.id.record_view_bgLevelPre);
+            bgLevelPostTextView = (TextView) itemView.findViewById(R.id.record_view_bgLevelPost);
+            doseTextView = (TextView) itemView.findViewById(R.id.record_view_dose);
+            notesTextView = (TextView) itemView.findViewById(R.id.record_view_notes);
         }
     }
 
@@ -58,7 +52,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View cardView = inflater.inflate(R.layout.fragment_cardview, parent, false);
+        View cardView = inflater.inflate(R.layout.fragment_record, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(cardView);
         return viewHolder;
