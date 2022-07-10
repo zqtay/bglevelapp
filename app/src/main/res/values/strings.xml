@@ -17,7 +17,12 @@
     <string name="text_label_exportBackup">Backup</string>
     <string name="text_label_exportExtended">Export</string>
     <string name="text_label_import">Import</string>
+
+    <!-- Records filter -->
     <string name="text_label_filter">Filter</string>
+    <string name="text_label_byDate">By Date</string>
+    <string name="text_label_byDateRange">By Date Range</string>
+    <string name="text_label_all">All</string>
 
     <string name="text_placeholder_date">XXXX/XX/XX</string>
     <string name="text_placeholder_time">XX:XX</string>

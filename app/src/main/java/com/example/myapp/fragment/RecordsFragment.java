@@ -45,6 +45,7 @@ public class RecordsFragment extends Fragment {
 
     Activity activity;
     DatePickerFragment datePicker;
+    FilterDialogFragment filterDialog;
 
     @Nullable
     @Override
@@ -69,7 +70,7 @@ public class RecordsFragment extends Fragment {
             }
         });
 
-        onClickReload(null);
+        reloadAllRecords();
     }
 
     @Override
@@ -96,7 +97,7 @@ public class RecordsFragment extends Fragment {
         rvRecords.setLayoutManager(new LinearLayoutManager(activity));
     }
 
-    public void onClickReload(View v) {
+    public void reloadAllRecords() {
         AsyncTask.execute(()-> {
             List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
             activity.runOnUiThread( ()-> {
@@ -106,6 +107,7 @@ public class RecordsFragment extends Fragment {
     }
 
     public void onSwipeReload(SwipeRefreshLayout swipeCont) {
+        // TODO reload based on filter
         AsyncTask.execute(()-> {
             List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
             activity.runOnUiThread( ()-> {
@@ -220,7 +222,7 @@ public class RecordsFragment extends Fragment {
 
             AppDatabaseService.insertAllRecords(records, context);
 
-            onClickReload(null);
+            reloadAllRecords();
         });
     }
 
@@ -296,6 +298,14 @@ public class RecordsFragment extends Fragment {
         return true;
     }
 
+    public boolean showFilterDialog(View v) {
+        if (filterDialog == null || !(filterDialog instanceof FilterDialogFragment)) {
+            filterDialog = new FilterDialogFragment();
+        }
+        filterDialog.show(((FragmentActivity) activity).getSupportFragmentManager(), "filterDialog");
+        return true;
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
@@ -315,7 +325,7 @@ public class RecordsFragment extends Fragment {
                 onClickImport(null);
                 return true;
             case R.id.toolbar_action_filter:
-                showDatePickerDialog(null);
+                showFilterDialog(null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
