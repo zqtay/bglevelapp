@@ -26,6 +26,9 @@ public interface BGRecordDao {
     @Query("SELECT * FROM bgrecord WHERE date = :date")
     Flowable<List<BGRecord>> findByDate(int date);
 
+    @Query("SELECT * FROM bgrecord WHERE date >= :dateStart AND date <= :dateEnd")
+    Flowable<List<BGRecord>> findByDateRange(int dateStart, int dateEnd);
+
     @Query("SELECT * FROM bgrecord WHERE date IN (:dates)")
     Flowable<List<BGRecord>> findByDates(int[] dates);
 

@@ -54,10 +54,10 @@ public class FormFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         activity = getActivity();
+        datePicker = new FormDatePickerFragment();
 
         Button dateButton = (Button) view.findViewById(R.id.form_button_date);
         Button addButton = (Button) view.findViewById(R.id.form_button_add);
-        datePicker = new DatePickerFragment(dateButton);
 
         // Date button
         Calendar c = Calendar.getInstance();
@@ -71,52 +71,9 @@ public class FormFragment extends Fragment {
         addButton.setOnLongClickListener(this::onLongClickClear);
     }
 
-
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        View viewToUpdate;
-        Calendar lastSetCal;
-
-        DatePickerFragment(View view) {
-            viewToUpdate = view;
-            lastSetCal = Calendar.getInstance();
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            int year = lastSetCal.get(Calendar.YEAR);
-            int month = lastSetCal.get(Calendar.MONTH);
-            int day = lastSetCal.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            lastSetCal.set(Calendar.YEAR, year);
-            lastSetCal.set(Calendar.MONTH, month);
-            lastSetCal.set(Calendar.DAY_OF_MONTH, day);
-            if (viewToUpdate instanceof TextView) {
-                String date = (new SimpleDateFormat(Util.DATE_PATTERN)).format(lastSetCal.getTime());
-                ((TextView)viewToUpdate).setText(date);
-            }
-        }
-
-        public void setDate(String date) {
-            // date is formatted as yyyy/MM/dd
-            lastSetCal.set(Calendar.YEAR, Integer.parseInt(date.substring(0,4)));
-            lastSetCal.set(Calendar.MONTH, Integer.parseInt(date.substring(5,7)));
-            lastSetCal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date.substring(8,10)));
-        }
-    }
-
     public void showDatePickerDialog(View v) {
-        if (datePicker == null || !(datePicker instanceof DatePickerFragment)) {
-            datePicker = new DatePickerFragment(v);
-        }
-        datePicker.show(((FragmentActivity)activity).getSupportFragmentManager(), "datePickerForm");
+        datePicker.setViewToUpdate(v);
+        datePicker.show(((FragmentActivity)activity).getSupportFragmentManager(), FormDatePickerFragment.TAG_SET_DATE);
     }
 
     public void onClickAdd(View v) {
@@ -179,7 +136,7 @@ public class FormFragment extends Fragment {
     public void displayFormValues() {
         if (formDate != null && !formDate.isEmpty()) {
             ((Button) activity.findViewById(R.id.form_button_date)).setText(formDate);
-            datePicker.setDate(formDate);
+            datePicker.setDate(Util.convertDate(formDate));
         }
         if (formEvent != null)
             ((Spinner) activity.findViewById(R.id.form_spinner_event)).setSelection(Util.convertEvent(formEvent) - 1);
@@ -198,5 +155,17 @@ public class FormFragment extends Fragment {
         formBgLevelPost = null;
         formDose = null;
         formNotes = null;
+    }
+
+    public static class FormDatePickerFragment extends DatePickerFragment {
+        public static final String TAG_SET_DATE = "datePickerForm";
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            super.onDateSet(view, year, month, day);
+            if (getViewToUpdate() instanceof TextView) {
+                String date = (new SimpleDateFormat(Util.DATE_PATTERN)).format(getCal().getTime());
+                ((TextView) getViewToUpdate()).setText(date);
+            }
+        }
     }
 }

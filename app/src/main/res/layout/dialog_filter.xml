@@ -57,10 +57,12 @@
 
             <RadioGroup
                 android:id="@+id/dialogFilter_radioGroup"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/dialogFilter_divider">
 
@@ -75,8 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text_label_byDateRange"
-                    android:visibility="gone"
-                    tools:visibility="gone" />
+                    tools:visibility="visible" />
 
                 <RadioButton
                     android:id="@+id/dialogFilter_button_setAll"
@@ -84,6 +85,49 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_label_all" />
             </RadioGroup>
+
+            <View
+                android:id="@+id/dialogFilter_divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider"
+                android:backgroundTint="@color/divider_dark"
+                app:layout_constraintBottom_toTopOf="@+id/dialogFilter_buttonLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialogFilter_radioGroup" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/dialogFilter_buttonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialogFilter_divider2">
+
+                <Button
+                    android:id="@+id/dialogFilter_button_search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/text_label_search"
+                    android:textColor="@color/purple_700"
+                    android:textSize="14sp"
+                    app:cornerRadius="0dp"
+                    app:icon="@drawable/ic_baseline_search_24"
+                    app:iconTint="@color/purple_700"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/purple_700" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

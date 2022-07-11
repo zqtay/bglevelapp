@@ -40,11 +40,12 @@ import com.example.myapp.db.BGRecord;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public class RecordsFragment extends Fragment {
 
     Activity activity;
-    DatePickerFragment datePicker;
     FilterDialogFragment filterDialog;
 
     @Nullable
@@ -61,6 +62,7 @@ public class RecordsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         activity = getActivity();
+        filterDialog = new FilterDialogFragment();
 
         SwipeRefreshLayout swipeCont = (SwipeRefreshLayout) view.findViewById(R.id.records_swipe);
         swipeCont.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -70,7 +72,7 @@ public class RecordsFragment extends Fragment {
             }
         });
 
-        reloadAllRecords();
+        reloadRecords(FilterDialogFragment.FILTER_ALL, null);
     }
 
     @Override
@@ -97,24 +99,49 @@ public class RecordsFragment extends Fragment {
         rvRecords.setLayoutManager(new LinearLayoutManager(activity));
     }
 
-    public void reloadAllRecords() {
-        AsyncTask.execute(()-> {
-            List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
-            activity.runOnUiThread( ()-> {
-                updateRecordsView(records);
-            });
-        });
+    public void reloadRecords(byte filterMode, Runnable callback) {
+        switch (filterMode) {
+            case FilterDialogFragment.FILTER_BY_DATE:
+                int date = Integer.parseInt(filterDialog.getDateString(FilterDialogFragment.CAL_DATE, Util.DATE_PATTERN_DATA));
+                AsyncTask.execute(()-> {
+                    List<BGRecord> records = AppDatabaseService.
+                            findRecordsByDate(date, activity.getApplicationContext());
+                    activity.runOnUiThread( ()-> {
+                        updateRecordsView(records);
+                        if (callback != null)
+                            callback.run();
+                    });
+                });
+                break;
+            case FilterDialogFragment.FILTER_BY_DATE_RANGE:
+                int dateStart = Integer.parseInt(filterDialog.getDateString(FilterDialogFragment.CAL_DATE_START, Util.DATE_PATTERN_DATA));
+                int dateEnd = Integer.parseInt(filterDialog.getDateString(FilterDialogFragment.CAL_DATE_END, Util.DATE_PATTERN_DATA));
+                AsyncTask.execute(()-> {
+                    List<BGRecord> records = AppDatabaseService.
+                            findRecordsByDateRange(dateStart, dateEnd, activity.getApplicationContext());
+                    activity.runOnUiThread( ()-> {
+                        updateRecordsView(records);
+                        if (callback != null)
+                            callback.run();
+                    });
+                });
+                break;
+            case FilterDialogFragment.FILTER_ALL:
+            default:
+                AsyncTask.execute(() -> {
+                    List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
+                    activity.runOnUiThread(() -> {
+                        updateRecordsView(records);
+                        if (callback != null)
+                            callback.run();
+                    });
+                });
+                break;
+        }
     }
 
     public void onSwipeReload(SwipeRefreshLayout swipeCont) {
-        // TODO reload based on filter
-        AsyncTask.execute(()-> {
-            List<BGRecord> records = AppDatabaseService.findAllRecord(activity.getApplicationContext());
-            activity.runOnUiThread( ()-> {
-                updateRecordsView(records);
-                swipeCont.setRefreshing(false);
-            });
-        });
+        reloadRecords(filterDialog.getFilterMode(), () -> {swipeCont.setRefreshing(false);});
     }
 
     public void onClickExportBackup(View v) {
@@ -222,7 +249,7 @@ public class RecordsFragment extends Fragment {
 
             AppDatabaseService.insertAllRecords(records, context);
 
-            reloadAllRecords();
+            reloadRecords(FilterDialogFragment.FILTER_ALL, null);
         });
     }
 
@@ -252,56 +279,7 @@ public class RecordsFragment extends Fragment {
         }
     }
 
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        Calendar lastSetCal;
-
-        DatePickerFragment() {
-            lastSetCal = Calendar.getInstance();
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            int year = lastSetCal.get(Calendar.YEAR);
-            int month = lastSetCal.get(Calendar.MONTH);
-            int day = lastSetCal.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            Activity activity = getActivity();
-            lastSetCal.set(Calendar.YEAR, year);
-            lastSetCal.set(Calendar.MONTH, month);
-            lastSetCal.set(Calendar.DAY_OF_MONTH, day);
-            int date = Integer.parseInt((new SimpleDateFormat(Util.DATE_PATTERN_DATA)).format(lastSetCal.getTime()));
-            AsyncTask.execute(()-> {
-                List<BGRecord> records = AppDatabaseService.findRecordsByDate(date, activity.getApplicationContext());
-                activity.runOnUiThread( ()-> {
-                    RecyclerView rvRecords = (RecyclerView) activity.findViewById(R.id.records_rv);
-                    RecordsAdapter adapter = new RecordsAdapter(records);
-                    rvRecords.setAdapter(adapter);
-                    rvRecords.setLayoutManager(new LinearLayoutManager(activity));
-                });
-            });
-        }
-    }
-
-    public boolean showDatePickerDialog(View v) {
-        if (datePicker == null || !(datePicker instanceof RecordsFragment.DatePickerFragment)) {
-            datePicker = new RecordsFragment.DatePickerFragment();
-        }
-        datePicker.show(((FragmentActivity) activity).getSupportFragmentManager(), "datePickerRecords");
-        return true;
-    }
-
     public boolean showFilterDialog(View v) {
-        if (filterDialog == null || !(filterDialog instanceof FilterDialogFragment)) {
-            filterDialog = new FilterDialogFragment();
-        }
         filterDialog.show(((FragmentActivity) activity).getSupportFragmentManager(), "filterDialog");
         return true;
     }

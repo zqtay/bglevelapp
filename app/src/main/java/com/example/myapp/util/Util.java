@@ -18,7 +18,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemAlreadyExistsException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Util {
@@ -120,12 +122,20 @@ public class Util {
             return iDate;
         }
 
+        date = date.trim();
+
         // String "2022/03/04" (04 MAR 2022) = int (decimal) 20220304
         if (date.contains("/")) {
             saDate =  date.split("/");
         }
         else if (date.contains("-")){
             saDate =  date.split("-");
+        }
+        else if (date.length() == 8) {
+            saDate = new String[3];
+            saDate[0] = date.substring(0, 4);
+            saDate[1] = date.substring(4, 6);
+            saDate[2] = date.substring(6, 8);
         }
 
         if (saDate.length == 3) {
@@ -145,6 +155,14 @@ public class Util {
         else {
             return "";
         }
+    }
+
+    public static String formatDateString(Calendar cal, String format) {
+        return (new SimpleDateFormat(format)).format(cal.getTime());
+    }
+
+    public static String formatDateString(Calendar cal) {
+        return formatDateString(cal, Util.DATE_PATTERN);
     }
 
     public static void printRecord(BGRecord record) {
