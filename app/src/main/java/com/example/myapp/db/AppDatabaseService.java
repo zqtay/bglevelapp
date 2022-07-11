@@ -38,9 +38,6 @@ public class AppDatabaseService {
 
     public static BGRecord findRecord(int date, byte event, Context context) {
         BGRecord record = null;
-        if (dao == null) {
-            buildDatabase(context);
-        }
         try {
             record = dao.find(date, event)
                     .subscribeOn(Schedulers.io())
@@ -55,9 +52,6 @@ public class AppDatabaseService {
 
     public static List<BGRecord> findAllRecord(Context context) {
         List<BGRecord> records = null;
-        if (dao == null) {
-            buildDatabase(context);
-        }
         try {
             records = dao.findAll()
                     .subscribeOn(Schedulers.io())
@@ -72,9 +66,6 @@ public class AppDatabaseService {
 
     public static List<BGRecord> findRecordsByDate(int date, Context context) {
         List<BGRecord> records = null;
-        if (dao == null) {
-            buildDatabase(context);
-        }
         try {
             records = dao.findByDate(date)
                     .subscribeOn(Schedulers.io())
@@ -102,9 +93,6 @@ public class AppDatabaseService {
     }
 
     public static void addRecord(BGRecord record, Context context) {
-        if (dao == null) {
-            buildDatabase(context);
-        }
         dao.insert(record)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -115,9 +103,6 @@ public class AppDatabaseService {
     }
 
     public static void updateRecord(BGRecord record, Context context) {
-        if (dao == null) {
-            buildDatabase(context);
-        }
         dao.update(record)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -154,9 +139,6 @@ public class AppDatabaseService {
     }
 
     public static void deleteRecord(int date, byte event, Context context) {
-        if (dao == null) {
-            buildDatabase(context);
-        }
         dao.delete(date, event)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -167,9 +149,6 @@ public class AppDatabaseService {
     }
 
     public static void insertAllRecords(List<BGRecord> records, Context context) {
-        if (dao == null) {
-            buildDatabase(context);
-        }
         dao.insertAll(records)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -180,9 +159,6 @@ public class AppDatabaseService {
     }
 
     public static void getView(Context context) {
-        if (dao == null) {
-            buildDatabase(context);
-        }
     }
 
 }

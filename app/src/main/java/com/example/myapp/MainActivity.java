@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.myapp.db.AppDatabaseService;
 import com.example.myapp.fragment.AppTabAdapter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Build database
+        AppDatabaseService.buildDatabase(getApplicationContext());
 
         // Toolbar
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
