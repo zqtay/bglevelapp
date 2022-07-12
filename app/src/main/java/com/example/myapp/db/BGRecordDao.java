@@ -67,6 +67,4 @@ public interface BGRecordDao {
     @Query("DELETE from bgrecord WHERE date = :date AND event = :event")
     Completable delete(int date, byte event);
 
-    //@Query("SELECT * FROM bgrecordview")
-    //LiveData<List<BGRecordView>> getView();
 }

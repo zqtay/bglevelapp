@@ -157,8 +157,4 @@ public class AppDatabaseService {
                             .show();
                 }, Throwable::printStackTrace );
     }
-
-    public static void getView(Context context) {
-    }
-
 }
