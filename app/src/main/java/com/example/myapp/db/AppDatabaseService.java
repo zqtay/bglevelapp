@@ -92,6 +92,20 @@ public class AppDatabaseService {
         return records;
     }
 
+    public static List<String> findPastNotes(int limit, Context context) {
+        List<String> notes = null;
+        try {
+            notes = dao.findPastNotes(limit)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .toObservable().blockingFirst(null);
+        }
+        catch (EmptyResultSetException ex) {
+
+        }
+        return notes;
+    }
+
     public static void addRecord(BGRecord record, Context context) {
         dao.insert(record)
                 .subscribeOn(Schedulers.io())

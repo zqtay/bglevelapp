@@ -32,6 +32,11 @@ public interface BGRecordDao {
     @Query("SELECT * FROM bgrecord WHERE date IN (:dates)")
     Flowable<List<BGRecord>> findByDates(int[] dates);
 
+    @Query("SELECT notes FROM bgrecord " +
+            "WHERE notes IS NOT NULL AND notes <> ''" +
+            "ORDER BY date DESC, event DESC LIMIT :limit")
+    Flowable<List<String>> findPastNotes(int limit);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insert(BGRecord record);
 

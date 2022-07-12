@@ -4,15 +4,20 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,19 +32,24 @@ import com.example.myapp.util.Util;
 import com.example.myapp.db.AppDatabaseService;
 import com.example.myapp.db.BGRecord;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class FormFragment extends Fragment {
 
     Activity activity;
     DatePickerFragment datePicker;
+    ArrayAdapter<String> notesArrAdapter;
     String formDate;
     String formEvent;
     String formBgLevelPre;
     String formBgLevelPost;
     String formDose;
     String formNotes;
+    int notesArrSize;
 
     @Nullable
     @Override
@@ -55,25 +65,57 @@ public class FormFragment extends Fragment {
 
         activity = getActivity();
         datePicker = new FormDatePickerFragment();
+        notesArrSize = 5;
+        notesArrAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_dropdown_item_1line,  new ArrayList<String>());
 
         Button dateButton = (Button) view.findViewById(R.id.form_button_date);
         Button addButton = (Button) view.findViewById(R.id.form_button_add);
+        AutoCompleteTextView notesTextInput = (AutoCompleteTextView) view.findViewById(R.id.form_input_notes);
 
         // Date button
         Calendar c = Calendar.getInstance();
         Log.d("debug","Current time => "+c.getTime());
         String formattedDate = (new SimpleDateFormat(Util.DATE_PATTERN)).format(c.getTime());
         dateButton.setText(formattedDate);
-
-        // Setup onclick events
         dateButton.setOnClickListener(this::showDatePickerDialog);
+
+        // Add button
         addButton.setOnClickListener(this::onClickAdd);
         addButton.setOnLongClickListener(this::onLongClickClear);
+
+        // Set autofill
+        notesArrAdapter.setNotifyOnChange(false);
+        notesTextInput.setThreshold(0);
+        notesTextInput.setAdapter(notesArrAdapter);
+        notesTextInput.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                notesTextInput.onTouchEvent(event);
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    onClickNotes(v);
+                }
+                return true;
+            }
+        } );
     }
 
     public void showDatePickerDialog(View v) {
         datePicker.setViewToUpdate(v);
         datePicker.show(((FragmentActivity)activity).getSupportFragmentManager(), FormDatePickerFragment.TAG_SET_DATE);
+    }
+
+    public boolean onClickNotes(View v) {
+        AsyncTask.execute(()-> {
+            List<String> notes = AppDatabaseService.findPastNotes(notesArrSize, activity.getApplicationContext());
+            activity.runOnUiThread(() -> {
+                notesArrAdapter.clear();
+                notesArrAdapter.addAll(notes);
+                if (!((AutoCompleteTextView)v).isPopupShowing()) {
+                    ((AutoCompleteTextView)v).showDropDown();
+                }
+            });
+        });
+        return true;
     }
 
     public void onClickAdd(View v) {

@@ -150,7 +150,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/form_label_dose" />
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/form_input_notes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
