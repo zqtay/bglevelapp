@@ -53,7 +53,7 @@ public class RecordInfoDialog extends Dialog {
 
     public void onClickEdit(View v) {
         MainActivity.tabAdapter.formFragment.setFormValues(date, event, bglevel_pre, bglevel_post, dose, notes);
-        MainActivity.viewPager.setCurrentItem(AppTabAdapter.TAB_FORM_POSITION);
+        MainActivity.viewPager.setCurrentItem(AppTabAdapter.TAB_INDEX_FORM);
         dismiss();
     }
 }

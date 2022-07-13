@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == AppTabAdapter.TAB_FORM_POSITION) {
+                if (position == AppTabAdapter.TAB_INDEX_FORM) {
                     tabAdapter.formFragment.displayFormValues();
                 }
             }
