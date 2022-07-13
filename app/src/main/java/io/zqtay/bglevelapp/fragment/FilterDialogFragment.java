@@ -1,7 +1,9 @@
 package io.zqtay.bglevelapp.fragment;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -116,6 +119,7 @@ public class FilterDialogFragment extends DialogFragment {
 
         public void onClickSetDateRange(View v) {
             datePicker.setViewToUpdate(findViewById(R.id.dialogFilter_button_setDateRange));
+            datePicker.getViewToUpdate().setEnabled(false);
             datePicker.setCal(calDateStart);
             datePicker.cal2 = calDateEnd;
             datePicker.show(getParentFragmentManager(), FilterDatePickerFragment.TAG_SET_DATE_RANGE);
@@ -126,12 +130,20 @@ public class FilterDialogFragment extends DialogFragment {
 
         public void onClickSearch(View v) {
             byte filterMode = FilterDialogFragment.this.getFilterMode();
+            if (filterMode == FILTER_BY_DATE_RANGE) {
+                if (Util.convertDate(filterDialog.calDateStart) >
+                        Util.convertDate(filterDialog.calDateEnd)) {
+                    Toast.makeText(getContext(), "Invalid date range!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
             MainActivity.tabAdapter.recordsFragment.reloadRecords(filterMode, null);
             this.dismiss();
         }
     }
 
-    public static class FilterDatePickerFragment extends DatePickerFragment {
+    public static class FilterDatePickerFragment extends DatePickerFragment
+            implements DialogInterface.OnDismissListener {
         public static final String TAG_SET_DATE = "datePickerFilter";
         public static final String TAG_SET_DATE_RANGE = "datePickerFilterRange";
 
@@ -165,10 +177,19 @@ public class FilterDialogFragment extends DialogFragment {
                                     Util.formatDateString(calStart) + " - " + Util.formatDateString(this.cal2));
                             isStartDateSet = false;
                         }
+                        this.getViewToUpdate().setEnabled(true);
                         break;
                     default:
                         break;
                 }
+            }
+        }
+
+        @Override
+        public void onDismiss(@NonNull DialogInterface dialog) {
+            super.onDismiss(dialog);
+            if (this.getTag() == TAG_SET_DATE_RANGE) {
+                this.getViewToUpdate().setEnabled(true);
             }
         }
     }

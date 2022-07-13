@@ -140,6 +140,11 @@ public class Util {
         return iDate;
     }
 
+    public static int convertDate(Calendar cal) {
+        String date = formatDateString(cal, DATE_PATTERN_DATA);
+        return convertDate(date);
+    }
+
     public static String formatDateString(String date) {
         if (date != null && !date.isEmpty()) {
             date = date.trim();
