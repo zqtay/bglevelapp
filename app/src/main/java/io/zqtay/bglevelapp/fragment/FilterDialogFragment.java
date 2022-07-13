@@ -1,39 +1,23 @@
-package com.example.myapp.fragment;
+package io.zqtay.bglevelapp.fragment;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapp.MainActivity;
-import com.example.myapp.R;
-import com.example.myapp.db.AppDatabaseService;
-import com.example.myapp.db.BGRecord;
-import com.example.myapp.util.Util;
+import io.zqtay.bglevelapp.MainActivity;
+import io.zqtay.bglevelapp.R;
+import io.zqtay.bglevelapp.util.Util;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 public class FilterDialogFragment extends DialogFragment {
 

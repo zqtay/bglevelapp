@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyApp</string>
+    <string name="app_name">BGLevel</string>
     <string name="text_label_bgLevel">Blood Glucose Level</string>
     <string name="text_label_pre">Pre</string>
     <string name="text_label_post">Post</string>

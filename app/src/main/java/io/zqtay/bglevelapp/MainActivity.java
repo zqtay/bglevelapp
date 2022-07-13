@@ -1,4 +1,4 @@
-package com.example.myapp;
+package io.zqtay.bglevelapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,9 +7,11 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.myapp.db.AppDatabaseService;
-import com.example.myapp.fragment.AppTabAdapter;
 import com.google.android.material.tabs.TabLayout;
+
+import io.zqtay.bglevelapp.db.AppDatabaseService;
+import io.zqtay.bglevelapp.fragment.AppTabAdapter;
+import io.zqtay.bglevelapp.R;
 
 public class MainActivity extends AppCompatActivity {
 

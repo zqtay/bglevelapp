@@ -1,8 +1,6 @@
-package com.example.myapp.fragment;
+package io.zqtay.bglevelapp.fragment;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,25 +15,20 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Filter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.myapp.R;
-import com.example.myapp.util.Util;
-import com.example.myapp.db.AppDatabaseService;
-import com.example.myapp.db.BGRecord;
+import io.zqtay.bglevelapp.db.AppDatabaseService;
+import io.zqtay.bglevelapp.db.BGRecord;
+import io.zqtay.bglevelapp.R;
+import io.zqtay.bglevelapp.util.Util;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class FormFragment extends Fragment {

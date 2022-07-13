@@ -2,7 +2,7 @@
  * https://stackoverflow.com/a/36162691/3049655
  */
 
-package com.example.myapp.util;
+package io.zqtay.bglevelapp.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -18,7 +18,6 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.List;
-
 
 public final class FileUtil {
 

@@ -1,23 +1,16 @@
-package com.example.myapp.util;
+package io.zqtay.bglevelapp.util;
 
-import com.example.myapp.db.BGRecord;
+import io.zqtay.bglevelapp.db.BGRecord;
 
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.myapp.db.BGRecord;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.FileSystemAlreadyExistsException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

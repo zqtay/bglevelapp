@@ -1,4 +1,4 @@
-package com.example.myapp.fragment;
+package io.zqtay.bglevelapp.fragment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapp.R;
-import com.example.myapp.db.BGRecord;
-import com.example.myapp.util.Util;
+import io.zqtay.bglevelapp.db.BGRecord;
+import io.zqtay.bglevelapp.R;
+import io.zqtay.bglevelapp.util.Util;
 
 import java.util.List;
 

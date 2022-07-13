@@ -1,8 +1,6 @@
-package com.example.myapp.fragment;
+package io.zqtay.bglevelapp.fragment;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,29 +17,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.myapp.util.FileUtil;
-import com.example.myapp.R;
-import com.example.myapp.util.Util;
-import com.example.myapp.db.AppDatabaseService;
-import com.example.myapp.db.BGRecord;
+import io.zqtay.bglevelapp.db.AppDatabaseService;
+import io.zqtay.bglevelapp.db.BGRecord;
+import io.zqtay.bglevelapp.R;
+import io.zqtay.bglevelapp.util.FileUtil;
+import io.zqtay.bglevelapp.util.Util;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 public class RecordsFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.myapp;
+package io.zqtay.bglevelapp;
 
 import org.junit.Test;
 

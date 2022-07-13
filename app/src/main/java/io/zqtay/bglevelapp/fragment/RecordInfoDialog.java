@@ -1,4 +1,4 @@
-package com.example.myapp.fragment;
+package io.zqtay.bglevelapp.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.myapp.MainActivity;
-import com.example.myapp.R;
-import com.example.myapp.db.AppDatabaseService;
-import com.example.myapp.util.Util;
+import io.zqtay.bglevelapp.db.AppDatabaseService;
+import io.zqtay.bglevelapp.MainActivity;
+import io.zqtay.bglevelapp.R;
+import io.zqtay.bglevelapp.util.Util;
 
 public class RecordInfoDialog extends Dialog {
     String date;

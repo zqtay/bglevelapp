@@ -1,24 +1,11 @@
-package com.example.myapp.db;
+package io.zqtay.bglevelapp.db;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Dao;
-import androidx.room.Database;
-import androidx.room.Delete;
 import androidx.room.EmptyResultSetException;
-import androidx.room.Entity;
-import androidx.room.Insert;
-import androidx.room.PrimaryKey;
-import androidx.room.Query;
 import androidx.room.Room;
-import androidx.room.RoomDatabase;
-
-import com.example.myapp.MainActivity;
 
 import java.util.List;
 

@@ -1,10 +1,9 @@
-package com.example.myapp.db;
+package io.zqtay.bglevelapp.db;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 @Entity(primaryKeys = {"date","event"})
 public class BGRecord {
