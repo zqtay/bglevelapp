@@ -73,10 +73,7 @@ public class FormFragment extends Fragment {
         AutoCompleteTextView notesTextInput = (AutoCompleteTextView) view.findViewById(R.id.form_input_notes);
 
         // Date button
-        Calendar c = Calendar.getInstance();
-        Log.d("debug","Current time => "+c.getTime());
-        String formattedDate = (new SimpleDateFormat(Util.DATE_PATTERN)).format(c.getTime());
-        dateButton.setText(formattedDate);
+        dateButton.setText(Util.formatDateString(datePicker.getCal()));
         dateButton.setOnClickListener(this::showDatePickerDialog);
 
         // Add button
@@ -204,9 +201,9 @@ public class FormFragment extends Fragment {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int day) {
             super.onDateSet(view, year, month, day);
-            if (getViewToUpdate() instanceof TextView) {
-                String date = (new SimpleDateFormat(Util.DATE_PATTERN)).format(getCal().getTime());
-                ((TextView) getViewToUpdate()).setText(date);
+            View v = getViewToUpdate();
+            if (v instanceof TextView) {
+                ((TextView)v).setText(Util.formatDateString(getCal()));
             }
         }
     }
