@@ -269,7 +269,7 @@ public class Util {
 
         for (; iLine < saRecords.length; iLine++) {
             try {
-                saRecordInfo = saRecords[iLine].split(",", -1);
+                saRecordInfo = saRecords[iLine].split(",", 6);
                 date = Integer.parseInt(saRecordInfo[0]);
                 event = Byte.parseByte(saRecordInfo[1]);
                 bglevel_pre = !saRecordInfo[2].isEmpty() ? Float.parseFloat(saRecordInfo[2]) : null;
