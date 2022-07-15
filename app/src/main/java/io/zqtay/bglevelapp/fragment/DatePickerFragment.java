@@ -15,6 +15,7 @@ public class DatePickerFragment extends DialogFragment
 
     private Calendar cal;
     private View viewToUpdate;
+    private DatePickerDialog dp;
 
     DatePickerFragment() {
         cal = Calendar.getInstance();
@@ -26,9 +27,13 @@ public class DatePickerFragment extends DialogFragment
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-
-        // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        if (dp == null) {
+            dp = new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+        else {
+            dp.getDatePicker().init(year, month, day, null);
+        }
+        return dp;
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {

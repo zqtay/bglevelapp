@@ -114,7 +114,7 @@ public class FilterDialogFragment extends DialogFragment {
         public void onClickSetDate(View v) {
             datePicker.setViewToUpdate(findViewById(R.id.dialogFilter_button_setDate));
             datePicker.setCal(calDate);
-            if (!datePicker.isVisible()) {
+            if (datePicker.getDialog() == null || !datePicker.getDialog().isShowing()) {
                 datePicker.show(getParentFragmentManager(), FilterDatePickerFragment.TAG_SET_DATE);
             }
         }
@@ -123,7 +123,7 @@ public class FilterDialogFragment extends DialogFragment {
             datePicker.setViewToUpdate(findViewById(R.id.dialogFilter_button_setDateRange));
             datePicker.setCal(calDateStart);
             datePicker.cal2 = calDateEnd;
-            if (!datePicker.isVisible()) {
+            if (datePicker.getDialog() == null || !datePicker.getDialog().isShowing()) {
                 datePicker.show(getParentFragmentManager(), FilterDatePickerFragment.TAG_SET_DATE_RANGE);
             }
         }
