@@ -114,15 +114,18 @@ public class FilterDialogFragment extends DialogFragment {
         public void onClickSetDate(View v) {
             datePicker.setViewToUpdate(findViewById(R.id.dialogFilter_button_setDate));
             datePicker.setCal(calDate);
-            datePicker.show(getParentFragmentManager(), FilterDatePickerFragment.TAG_SET_DATE);
+            if (!datePicker.isVisible()) {
+                datePicker.show(getParentFragmentManager(), FilterDatePickerFragment.TAG_SET_DATE);
+            }
         }
 
         public void onClickSetDateRange(View v) {
             datePicker.setViewToUpdate(findViewById(R.id.dialogFilter_button_setDateRange));
-            datePicker.getViewToUpdate().setEnabled(false);
             datePicker.setCal(calDateStart);
             datePicker.cal2 = calDateEnd;
-            datePicker.show(getParentFragmentManager(), FilterDatePickerFragment.TAG_SET_DATE_RANGE);
+            if (!datePicker.isVisible()) {
+                datePicker.show(getParentFragmentManager(), FilterDatePickerFragment.TAG_SET_DATE_RANGE);
+            }
         }
 
         public void onClickSetAll(View v) {
@@ -177,7 +180,6 @@ public class FilterDialogFragment extends DialogFragment {
                                     Util.formatDateString(calStart) + " - " + Util.formatDateString(this.cal2));
                             isStartDateSet = false;
                         }
-                        this.getViewToUpdate().setEnabled(true);
                         break;
                     default:
                         break;
@@ -188,9 +190,6 @@ public class FilterDialogFragment extends DialogFragment {
         @Override
         public void onDismiss(@NonNull DialogInterface dialog) {
             super.onDismiss(dialog);
-            if (this.getTag() == TAG_SET_DATE_RANGE) {
-                this.getViewToUpdate().setEnabled(true);
-            }
         }
     }
 }
